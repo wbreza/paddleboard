@@ -1,7 +1,9 @@
 
-import { CosmosClient, Database, Container, CosmosClientOptions, Resource } from "@azure/cosmos";
+import { CosmosClient, Database, Container, CosmosClientOptions } from "@azure/cosmos";
+import shortid from "shortid";
+import { Entity } from "../models/app";
 
-export interface DataService<T> {
+export interface DataService<T extends Entity> {
   get: (id: string, partitionKey?: string) => Promise<T>;
   list: (options: any) => Promise<T[]>;
   save: (item: T) => Promise<T>;
@@ -13,9 +15,11 @@ export interface DataServiceOptions {
   key: string;
   databaseName: string;
   collectionName: string;
+  databaseOptions: any;
+  collectionOptions: any;
 }
 
-export abstract class DataServiceBase<T> implements DataService<T> {
+export abstract class DataServiceBase<T extends Entity> implements DataService<T> {
   private readonly client: CosmosClient;
   private database: Database;
   private collection: Container;
@@ -32,10 +36,16 @@ export abstract class DataServiceBase<T> implements DataService<T> {
   }
 
   public async init() {
-    const { database } = await this.client.databases.createIfNotExists({ id: this.options.databaseName });
+    const { database } = await this.client.databases.createIfNotExists({
+      id: this.options.databaseName,
+      ...this.options.databaseOptions
+    });
     this.database = database;
 
-    const { container } = await this.database.containers.createIfNotExists({ id: this.options.collectionName });
+    const { container } = await this.database.containers.createIfNotExists({
+      id: this.options.collectionName,
+      ...this.options.collectionOptions
+    });
     this.collection = container;
   }
 
@@ -50,6 +60,16 @@ export abstract class DataServiceBase<T> implements DataService<T> {
   }
 
   public async save(item: T): Promise<T> {
+    if (!item.id) {
+      item.id = shortid.generate();
+      item.audit = {
+        created: new Date(),
+        updated: new Date(),
+      };
+    }
+
+    item.audit.updated = new Date();
+
     const result = await this.collection.items.upsert(item);
     return result.resource as any;
   }
