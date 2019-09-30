@@ -26,9 +26,12 @@
   "author": "Wallace Breza",
   "license": "MIT",
   "dependencies": {
+    "@azure/cosmos": "^3.3.0",
+    "dotenv": "^8.1.0",
     "shortid": "^2.2.15"
   },
   "devDependencies": {
+    "@types/dotenv": "^6.1.1",
     "@types/jest": "^24.0.13",
     "@types/node": "12.0.8",
     "@types/shortid": "0.0.29",
