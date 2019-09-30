@@ -1,0 +1,142 @@
+service: pdlbrd-userprofile-api
+
+provider:
+  resourceGroup: wabrez-westus-dev-paddleboard
+  prefix: ${opt:prefix, 'sls'}
+  name: azure
+  region: West US
+  runtime: nodejs10.x
+  apim:
+    name: wabrez-wus-dev-pdlbrd-apim
+    apis:
+      - name: user-profile-api
+        subscriptionRequired: false
+        displayName: UserProfile API
+        description: UserProfile CRUD REST API
+        protocols:
+          - https
+        path: users
+        authorization: none
+    backends:
+      - name: user-profile-backend
+        url: api/users
+    cors:
+      allowCredentials: false
+      allowedOrigins:
+        - "*"
+      allowedMethods:
+        - GET
+        - POST
+        - PUT
+        - DELETE
+        - PATCH
+      allowedHeaders:
+        - "*"
+      exposeHeaders:
+        - "*"
+
+environment:
+  COSMOS_ENDPOINT: ${env:COSMOS_ENDPOINT}
+  COSMOS_KEY: ${env:COSMOS_KEY}
+
+plugins:
+  - serverless-azure-functions
+  - serverless-webpack
+
+functions:
+  # User Profiles
+  getUserProfileList:
+    handler: lib/handlers/userProfile.getUserProfileList
+    events:
+      - http: true
+        x-azure-settings:
+          methods:
+            - GET
+          route: users
+          authLevel: anonymous
+    apim:
+      operations:
+        - method: GET
+          urlTemplate: /
+
+  getUserProfile:
+    handler: lib/handlers/userProfile.getUserProfile
+    events:
+      - http: true
+        x-azure-settings:
+          methods:
+            - GET
+          route: users/{userId}
+          authLevel: anonymous
+    apim:
+      operations:
+        - method: GET
+          urlTemplate: /{userId}
+          templateParameters:
+            - name: userId
+              type: string
+
+  postUserProfile:
+    handler: lib/handlers/userProfile.postUserProfile
+    events:
+      - http: true
+        x-azure-settings:
+          methods:
+            - POST
+          route: users
+          authLevel: anonymous
+    apim:
+      operations:
+        - method: POST
+          urlTemplate: /
+
+  putUserProfile:
+    handler: lib/handlers/userProfile.putUserProfile
+    events:
+      - http: true
+        x-azure-settings:
+          methods:
+            - PUT
+          route: users/{userId}
+          authLevel: anonymous
+    apim:
+      operations:
+        - method: PUT
+          urlTemplate: /{userId}
+          templateParameters:
+            - name: userId
+              type: string
+
+  patchUserProfile:
+    handler: lib/handlers/userProfile.patchUserProfile
+    events:
+      - http: true
+        x-azure-settings:
+          methods:
+            - PATCH
+          route: users/{userId}
+          authLevel: anonymous
+    apim:
+      operations:
+        - method: PATCH
+          urlTemplate: /{userId}
+          templateParameters:
+            - name: userId
+              type: string
+
+  deleteUserProfile:
+    handler: lib/handlers/userProfile.deleteUserProfile
+    events:
+      - http: true
+        x-azure-settings:
+          methods:
+            - DELETE
+          route: users/{userId}
+          authLevel: anonymous
+    apim:
+      operations:
+        - method: DELETE
+          urlTemplate: /{userId}
+          templateParameters:
+            - name: userId
+              type: string

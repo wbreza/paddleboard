@@ -1,3 +1,4 @@
+import dotenv from "dotenv";
 import {
   LoggingServiceMiddleware,
   HTTPBindingMiddleware,
@@ -7,6 +8,7 @@ import {
   LogLevel,
 } from "@multicloud/sls-core";
 
+dotenv.config();
 const defaultLogger = new ConsoleLogger(LogLevel.VERBOSE);
 
 export const config = () => {
