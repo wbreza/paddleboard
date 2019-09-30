@@ -1,6 +1,6 @@
 {
   "name": "@paddleboard/core",
-  "version": "0.1.1-10",
+  "version": "1.0.0",
   "description": "Paddleboard core components",
   "repository": {
     "type": "git",

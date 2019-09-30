@@ -1,0 +1,51 @@
+{
+  "name": "userprofileapi",
+  "version": "1.0.0",
+  "description": "> TODO: description",
+  "author": "Wallace Breza <wallace@breza.me>",
+  "homepage": "https://github.com/wbreza/paddleboard#readme",
+  "license": "ISC",
+  "main": "lib/index.js",
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wbreza/paddleboard.git"
+  },
+  "scripts": {
+    "start": "npm run test -- --watch",
+    "lint": "eslint src/**/*.ts",
+    "lint:fix": "npm run lint -- --fix",
+    "pretest": "npm run lint",
+    "test": "jest",
+    "test:ci": "npm run test -- --ci",
+    "test:coverage": "npm run test -- --coverage",
+    "prebuild": "shx rm -rf lib/ && npm run test",
+    "build": "npx tsc"
+  },
+  "bugs": {
+    "url": "https://github.com/wbreza/paddleboard/issues"
+  },
+  "dependencies": {
+    "@multicloud/sls-azure": "^0.1.1",
+    "@multicloud/sls-core": "^0.1.1",
+    "@paddleboard/core": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/dotenv": "^6.1.1",
+    "@types/jest": "^24.0.13",
+    "@types/node": "12.0.8",
+    "@types/shortid": "0.0.29",
+    "@typescript-eslint/eslint-plugin": "^1.9.0",
+    "@typescript-eslint/parser": "^1.9.0",
+    "babel-jest": "^24.8.0",
+    "babel-plugin-transform-typescript-metadata": "0.2.2",
+    "babel-preset-react-app": "^9.0.0",
+    "dotenv": "^8.1.0",
+    "eslint": "^5.16.0",
+    "jest": "^24.8.0",
+    "shx": "^0.3.2",
+    "typescript": "^3.5.2"
+  }
+}
