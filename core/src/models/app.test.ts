@@ -1,5 +1,5 @@
 import shortid from "shortid";
-import { Category, Repo, UserProfile, Account, AuditInfo } from "./app";
+import { Category, Repository, UserProfile, Account, AuditInfo } from "./app";
 
 describe("App Models", (): void => {
   const auditInfo: AuditInfo = {
@@ -32,7 +32,7 @@ describe("App Models", (): void => {
     audit: auditInfo
   };
 
-  const repo: Repo = {
+  const repo: Repository = {
     id: shortid.generate(),
     name: "paddleboard",
     accountId: githubAccount.id,

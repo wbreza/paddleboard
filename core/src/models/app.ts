@@ -14,7 +14,7 @@ export interface Category extends Entity {
   description?: string;
 }
 
-export interface Repo extends Entity {
+export interface Repository extends Entity {
   categoryId?: string;
   accountId: string;
   userId: string;
@@ -23,11 +23,13 @@ export interface Repo extends Entity {
 }
 
 export interface PullRequest extends Entity {
-  repoId: string;
+  repositoryId: string;
+  categoryId?: string;
   providerId: string;
   userId: string;
   name: string;
   description?: string;
+  portalUrl: string;
 }
 
 export interface UserProfile extends Entity {
