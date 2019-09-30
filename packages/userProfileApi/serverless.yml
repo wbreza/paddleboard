@@ -6,6 +6,9 @@ provider:
   name: azure
   region: West US
   runtime: nodejs10.x
+  environment:
+    COSMOS_ENDPOINT: ${env:COSMOS_ENDPOINT}
+    COSMOS_KEY: ${env:COSMOS_KEY}
   apim:
     name: wabrez-wus-dev-pdlbrd-apim
     apis:
@@ -35,10 +38,6 @@ provider:
       exposeHeaders:
         - "*"
 
-environment:
-  COSMOS_ENDPOINT: ${env:COSMOS_ENDPOINT}
-  COSMOS_KEY: ${env:COSMOS_KEY}
-
 plugins:
   - serverless-azure-functions
   - serverless-webpack
@@ -46,7 +45,7 @@ plugins:
 functions:
   # User Profiles
   getUserProfileList:
-    handler: lib/handlers/userProfile.getUserProfileList
+    handler: src/handlers/userProfile.getUserProfileList
     events:
       - http: true
         x-azure-settings:
@@ -60,7 +59,7 @@ functions:
           urlTemplate: /
 
   getUserProfile:
-    handler: lib/handlers/userProfile.getUserProfile
+    handler: src/handlers/userProfile.getUserProfile
     events:
       - http: true
         x-azure-settings:
@@ -77,7 +76,7 @@ functions:
               type: string
 
   postUserProfile:
-    handler: lib/handlers/userProfile.postUserProfile
+    handler: src/handlers/userProfile.postUserProfile
     events:
       - http: true
         x-azure-settings:
@@ -91,7 +90,7 @@ functions:
           urlTemplate: /
 
   putUserProfile:
-    handler: lib/handlers/userProfile.putUserProfile
+    handler: src/handlers/userProfile.putUserProfile
     events:
       - http: true
         x-azure-settings:
@@ -108,7 +107,7 @@ functions:
               type: string
 
   patchUserProfile:
-    handler: lib/handlers/userProfile.patchUserProfile
+    handler: src/handlers/userProfile.patchUserProfile
     events:
       - http: true
         x-azure-settings:
@@ -125,7 +124,7 @@ functions:
               type: string
 
   deleteUserProfile:
-    handler: lib/handlers/userProfile.deleteUserProfile
+    handler: src/handlers/userProfile.deleteUserProfile
     events:
       - http: true
         x-azure-settings:
