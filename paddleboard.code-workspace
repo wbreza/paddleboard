@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "packages\\core"
+		},
+		{
+			"path": "packages\\userProfileApi"
+		},
+		{
+			"path": "packages\\repositoryApi"
+		}
+	]
+}
