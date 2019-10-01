@@ -13,6 +13,7 @@
     "url": "git+https://github.com/wbreza/paddleboard.git"
   },
   "scripts": {
+    "clean": "rimraf lib && rimraf src/**/*.js && rimraf src/**/*.d.ts",
     "start": "npm run test -- --watch",
     "lint": "eslint src/**/*.ts",
     "lint:fix": "npm run lint -- --fix",
@@ -20,7 +21,7 @@
     "test": "jest",
     "test:ci": "npm run test -- --ci",
     "test:coverage": "npm run test -- --coverage",
-    "prebuild": "shx rm -rf lib/ && npm run test",
+    "prebuild": "npm run clean",
     "build": "npx tsc",
     "offline": "npm run build && sls offline",
     "pack": "cross-env NODE_ENV=production BABEL_ENV=production sls webpack",
@@ -51,6 +52,7 @@
     "dotenv": "^8.1.0",
     "eslint": "^5.16.0",
     "jest": "^24.8.0",
+    "rimraf": "^3.0.0",
     "serverless-azure-functions": "^1.0.0",
     "serverless-webpack": "^5.3.1",
     "shx": "^0.3.2",
