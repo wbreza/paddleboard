@@ -50,6 +50,7 @@ describe("Repository Data Service", (): void => {
     };
 
     repo = await repoService.findSingle({ name: repo.name }) || await repoService.save(repo);
+    repo = await repoService.get(repo.id, user.id);
 
     let pullRequest: PullRequest = {
       categoryId: category.id,

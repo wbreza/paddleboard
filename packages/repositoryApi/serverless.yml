@@ -31,7 +31,7 @@ provider:
     backends:
       - name: repository-backend
         url: api/repositories
-      - name: repositories-users-backend
+      - name: user-profile-repository-backend
         url: api/users
     cors:
       allowCredentials: false
@@ -81,7 +81,7 @@ functions:
           authLevel: anonymous
     apim:
       api: user-profile-api
-      backend: repositories-users-backend
+      backend: user-profile-repository-backend
       operations:
         - method: GET
           urlTemplate: /{userId}/repositories
@@ -96,15 +96,17 @@ functions:
         x-azure-settings:
           methods:
             - GET
-          route: repositories/{repositoryId}
+          route: users/{userId}/repositories/{repositoryId}
           authLevel: anonymous
     apim:
-      api: repository-api
-      backend: repository-backend
+      api: user-profile-api
+      backend: user-profile-repository-backend
       operations:
         - method: GET
-          urlTemplate: /{repositoryId}
+          urlTemplate: /{userId}/repositories/{repositoryId}
           templateParameters:
+            - name: userId
+              type: string
             - name: repositoryId
               type: string
 

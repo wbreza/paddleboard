@@ -22,7 +22,7 @@
     "test:coverage": "npm run test -- --coverage",
     "prebuild": "shx rm -rf lib/ && npm run test",
     "build": "npx tsc",
-    "offline": "sls offline",
+    "offline": "npm run build && sls offline",
     "pack": "cross-env NODE_ENV=production BABEL_ENV=production sls webpack",
     "deploy": "cross-env NODE_ENV=production BABEL_ENV=production sls deploy"
   },
