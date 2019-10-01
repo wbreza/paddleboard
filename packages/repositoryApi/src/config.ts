@@ -18,6 +18,6 @@ export const config = () => {
     PerformanceMiddleware(),
     ExceptionMiddleware({ log: defaultLogger.log as any }),
     HTTPBindingMiddleware(),
-    CosmosMiddleware()
+    CosmosMiddleware(),
   ];
 };

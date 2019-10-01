@@ -1,9 +1,10 @@
 import { app } from "../app";
 import { config } from "../config"
 import { CloudContext } from "@multicloud/sls-core";
-import { UserProfileService } from "@paddleboard/core";
+import { UserProfileService, UserValidationMiddleware } from "@paddleboard/core";
 
 const middlewares = config();
+const userValidation = UserValidationMiddleware();
 
 export const getUserProfileList = app.use(middlewares, async (context: CloudContext) => {
   const userService = new UserProfileService();
@@ -12,8 +13,8 @@ export const getUserProfileList = app.use(middlewares, async (context: CloudCont
   context.send({ value: users }, 200);
 });
 
-export const getUserProfile = app.use(middlewares, (context: CloudContext) => {
-  context.send(null, 200);
+export const getUserProfile = app.use([...middlewares, userValidation], (context: CloudContext) => {
+  context.send({ value: context["user"] }, 200);
 });
 
 export const postUserProfile = app.use(middlewares, (context: CloudContext) => {

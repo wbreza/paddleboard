@@ -54,6 +54,8 @@ functions:
           route: users
           authLevel: anonymous
     apim:
+      api: user-profile-api
+      backend: user-profile-backend
       operations:
         - method: GET
           urlTemplate: /
@@ -68,6 +70,8 @@ functions:
           route: users/{userId}
           authLevel: anonymous
     apim:
+      api: user-profile-api
+      backend: user-profile-backend
       operations:
         - method: GET
           urlTemplate: /{userId}
@@ -85,6 +89,8 @@ functions:
           route: users
           authLevel: anonymous
     apim:
+      api: user-profile-api
+      backend: user-profile-backend
       operations:
         - method: POST
           urlTemplate: /
@@ -99,6 +105,8 @@ functions:
           route: users/{userId}
           authLevel: anonymous
     apim:
+      api: user-profile-api
+      backend: user-profile-backend
       operations:
         - method: PUT
           urlTemplate: /{userId}
@@ -116,6 +124,8 @@ functions:
           route: users/{userId}
           authLevel: anonymous
     apim:
+      api: user-profile-api
+      backend: user-profile-backend
       operations:
         - method: PATCH
           urlTemplate: /{userId}
@@ -133,6 +143,8 @@ functions:
           route: users/{userId}
           authLevel: anonymous
     apim:
+      api: user-profile-api
+      backend: user-profile-backend
       operations:
         - method: DELETE
           urlTemplate: /{userId}

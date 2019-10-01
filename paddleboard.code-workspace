@@ -5,6 +5,9 @@
 		},
 		{
 			"path": "packages\\userProfileApi"
+		},
+		{
+			"path": "packages\\repositoryApi"
 		}
 	]
 }
