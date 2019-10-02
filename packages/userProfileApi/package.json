@@ -21,7 +21,7 @@
     "test": "jest",
     "test:ci": "npm run test -- --ci",
     "test:coverage": "npm run test -- --coverage",
-    "prebuild": "npm run clean",
+    "prebuild": "npm run clean && npm run test",
     "build": "npx tsc",
     "offline": "npm run build && sls offline",
     "pack": "cross-env NODE_ENV=production BABEL_ENV=production sls webpack",

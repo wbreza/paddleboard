@@ -54,22 +54,6 @@ plugins:
 
 functions:
   # Repositories
-  getRepositoryList:
-    handler: src/handlers/repository.getRepositoryList
-    events:
-      - http: true
-        x-azure-settings:
-          methods:
-            - GET
-          route: repositories
-          authLevel: anonymous
-    apim:
-      api: repository-api
-      backend: repository-backend
-      operations:
-        - method: GET
-          urlTemplate: /
-
   getRepositoryListByUser:
     handler: src/handlers/repository.getRepositoryListByUser
     events:
@@ -117,14 +101,14 @@ functions:
         x-azure-settings:
           methods:
             - POST
-          route: repositories
+          route: users/{userId}/repositories
           authLevel: anonymous
     apim:
       api: repository-api
       backend: repository-backend
       operations:
         - method: POST
-          urlTemplate: /
+          urlTemplate: /{userId}/repositories
 
   putRepository:
     handler: src/handlers/repository.putRepository
@@ -133,14 +117,14 @@ functions:
         x-azure-settings:
           methods:
             - PUT
-          route: repositories/{repositoryId}
+          route: users/{userId}/repositories/{repositoryId}
           authLevel: anonymous
     apim:
       api: repository-api
       backend: repository-backend
       operations:
         - method: PUT
-          urlTemplate: /{repositoryId}
+          urlTemplate: /{userId}/repositories/{repositoryId}
           templateParameters:
             - name: repositoryId
               type: string
@@ -152,14 +136,14 @@ functions:
         x-azure-settings:
           methods:
             - PATCH
-          route: repositories/{repositoryId}
+          route: users/{userId}/repositories/{repositoryId}
           authLevel: anonymous
     apim:
       api: repository-api
       backend: repository-backend
       operations:
         - method: PATCH
-          urlTemplate: /{repositoryId}
+          urlTemplate: /{userId}/repositories/{repositoryId}
           templateParameters:
             - name: repositoryId
               type: string
@@ -171,14 +155,14 @@ functions:
         x-azure-settings:
           methods:
             - DELETE
-          route: repositories/{repositoryId}
+          route: users/{userId}/repositories/{repositoryId}
           authLevel: anonymous
     apim:
       api: repository-api
       backend: repository-backend
       operations:
         - method: DELETE
-          urlTemplate: /{repositoryId}
+          urlTemplate: /{userId}/repositories/{repositoryId}
           templateParameters:
             - name: repositoryId
               type: string

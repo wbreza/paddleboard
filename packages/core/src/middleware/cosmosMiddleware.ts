@@ -11,6 +11,10 @@ function cleanResource(resource: any) {
 export const CosmosMiddleware = () => async (context: CloudContext, next: () => Promise<void>) => {
   await next();
 
+  if (!context.res.body) {
+    return;
+  }
+
   const value = context.res.body["value"];
   if (!value) {
     return;

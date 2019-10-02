@@ -1,5 +1,5 @@
 import { CloudContextBuilder } from "@multicloud/sls-core";
-import { getRepositoryList } from "./repository";
+import { getRepositoryListByUser } from "./repository";
 
 describe("Repository Handlers", () => {
   describe("getRepositoryList", () => {
@@ -8,7 +8,7 @@ describe("Repository Handlers", () => {
       const context = await builder
         .asHttpRequest()
         .withRequestMethod("GET")
-        .invokeHandler(getRepositoryList);
+        .invokeHandler(getRepositoryListByUser);
 
       expect(context.res.body.value.length).toBeGreaterThanOrEqual(1);
       expect(context.res.status).toEqual(200);
