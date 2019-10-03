@@ -1,0 +1,78 @@
+service: pdlbrd-github-api
+
+provider:
+  resourceGroup: wabrez-westus-dev-paddleboard
+  prefix: ${opt:prefix, 'sls'}
+  name: azure
+  region: West US
+  runtime: nodejs10.x
+  environment:
+    COSMOS_ENDPOINT: ${env:COSMOS_ENDPOINT}
+    COSMOS_KEY: ${env:COSMOS_KEY}
+  apim:
+    name: wabrez-wus-dev-pdlbrd-apim
+    apis:
+      - name: github-api
+        subscriptionRequired: false
+        displayName: GitHub API
+        description: GitHub REST API for connection to Github Provider
+        protocols:
+          - https
+        path: github
+        authorization: none
+    backends:
+      - name: github-backend
+        url: api/github
+    cors:
+      allowCredentials: false
+      allowedOrigins:
+        - "*"
+      allowedMethods:
+        - GET
+        - POST
+        - PUT
+        - DELETE
+        - PATCH
+      allowedHeaders:
+        - "*"
+      exposeHeaders:
+        - "*"
+
+plugins:
+  - serverless-azure-functions
+  - serverless-webpack
+
+functions:
+  # Github
+  authorize:
+    handler: src/handlers/github.authorize
+    events:
+      - http: true
+        x-azure-settings:
+          methods:
+            - GET
+          route: github/authorize
+          authLevel: anonymous
+    apim:
+      api: github-api
+      backend: github-backend
+      operations:
+        - method: GET
+          urlTemplate: /authorize
+
+  hook:
+    handler: src/handlers/github.hook
+    events:
+      - http: true
+        x-azure-settings:
+          methods:
+            - POST
+          route: github/hook
+          authLevel: anonymous
+    apim:
+      api: github-api
+      backend: github-backend
+      operations:
+        - method: POST
+          urlTemplate: /hook
+
