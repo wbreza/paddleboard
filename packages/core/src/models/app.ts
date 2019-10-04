@@ -19,6 +19,7 @@ export interface Repository extends Entity {
   accountId: string;
   userId: string;
   name: string;
+  portalUrl: string;
   description?: string;
 }
 

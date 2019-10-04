@@ -9,6 +9,13 @@ provider:
   environment:
     COSMOS_ENDPOINT: ${env:COSMOS_ENDPOINT}
     COSMOS_KEY: ${env:COSMOS_KEY}
+    QUEUE_ACCOUNT_NAME: ${env:QUEUE_ACCOUNT_NAME}
+    QUEUE_ACCOUNT_KEY: ${env:QUEUE_ACCOUNT_KEY}
+    GITHUB_APP_ID: ${env:GITHUB_APP_ID}
+    GITHUB_CLIENT_ID: ${env:GITHUB_CLIENT_ID}
+    GITHUB_CLIENT_SECRET: ${env:GITHUB_CLIENT_SECRET}
+    GITHUB_REDIRECT_URI: ${env:GITHUB_REDIRECT_URI}
+    GITHUB_SIGNING_KEY: ${file(github.pem)}
   apim:
     name: wabrez-wus-dev-pdlbrd-apim
     apis:

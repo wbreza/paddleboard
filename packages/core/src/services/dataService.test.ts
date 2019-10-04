@@ -4,7 +4,6 @@ import { CategoryService } from "./categoryService";
 import { PullRequestService } from "./pullRequestService";
 import { AccountService } from "./accountService";
 import { UserProfile, Repository, Category, PullRequest, Account, ProviderType } from "../models/app";
-import shortid from "shortid";
 
 describe("Repository Data Service", (): void => {
   it("CRUD operations", async (): Promise<void> => {
@@ -16,6 +15,7 @@ describe("Repository Data Service", (): void => {
 
     await Promise.all([
       userProfileService.init(),
+      accountService.init(),
       categoryService.init(),
       repoService.init(),
       pullRequestService.init(),

@@ -24,7 +24,7 @@
     "prebuild": "npm run clean && npm run test",
     "build": "npx tsc",
     "offline": "npm run build && sls offline",
-    "pack": "cross-env NODE_ENV=production BABEL_ENV=production sls webpack",
+    "package": "cross-env NODE_ENV=production BABEL_ENV=production sls package",
     "deploy": "cross-env NODE_ENV=production BABEL_ENV=production sls deploy"
   },
   "bugs": {
