@@ -29,6 +29,7 @@ export const authorize = app.use(middlewares, async (context: CloudContext) => {
     clientId: process.env.GITHUB_CLIENT_ID,
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
     redirectUri: process.env.GITHUB_REDIRECT_URI,
+    signingKey: process.env.GITHUB_SIGNING_KEY
   });
 
   const userAccessToken = await githubService.getUserAccessToken(code);
@@ -66,6 +67,7 @@ export const install = app.use([StorageQueueMiddleware()], async (context: Cloud
     clientId: process.env.GITHUB_CLIENT_ID,
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
     redirectUri: process.env.GITHUB_REDIRECT_URI,
+    signingKey: process.env.GITHUB_SIGNING_KEY
   });
 
   const account: Account = context.event.account;
