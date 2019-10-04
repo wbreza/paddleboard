@@ -2,7 +2,8 @@ import { RepositoryService } from "./repositoryService";
 import { UserProfileService } from "./userProfileService";
 import { CategoryService } from "./categoryService";
 import { PullRequestService } from "./pullRequestService";
-import { UserProfile, Repository, Category, PullRequest } from "../models/app";
+import { AccountService } from "./accountService";
+import { UserProfile, Repository, Category, PullRequest, Account, ProviderType } from "../models/app";
 import shortid from "shortid";
 
 describe("Repository Data Service", (): void => {
@@ -11,6 +12,7 @@ describe("Repository Data Service", (): void => {
     const repoService = new RepositoryService();
     const categoryService = new CategoryService();
     const pullRequestService = new PullRequestService();
+    const accountService = new AccountService();
 
     await Promise.all([
       userProfileService.init(),
@@ -22,17 +24,24 @@ describe("Repository Data Service", (): void => {
     let user: UserProfile = {
       email: "wallace@breza.me",
       firstName: "Wallace",
-      lastName: "Breza",
-      accounts: [{
-        id: shortid.generate(),
-        providerId: "wbreza",
-        email: "wallace@breza.me",
-        accessToken: "ABC123",
-        refreshToken: "XYZ789"
-      }]
+      lastName: "Breza"
     };
 
     user = await userProfileService.getByEmail("wallace@breza.me") || await userProfileService.save(user);
+
+    let githubAccount: Account = {
+      userId: user.id,
+      providerId: "wbreza",
+      providerType: ProviderType.GitHub,
+      metadata: {
+        login: "wbreza",
+        id: 6540159,
+        type: "user",
+        name: "Wallace Breza"
+      }
+    }
+
+    githubAccount = await accountService.getByProvider(githubAccount.providerId, githubAccount.providerType) || await accountService.save(githubAccount);
 
     let category: Category = {
       name: "Personal",
@@ -44,7 +53,7 @@ describe("Repository Data Service", (): void => {
 
     let repo: Repository = {
       categoryId: category.id,
-      accountId: user.accounts[0].id,
+      accountId: githubAccount.id,
       userId: user.id,
       name: "Paddleboard"
     };
@@ -56,10 +65,10 @@ describe("Repository Data Service", (): void => {
       categoryId: category.id,
       repositoryId: repo.id,
       userId: user.id,
+      accountId: githubAccount.id,
       name: "Create the data services",
       description: "Creates the data services for paddleboard",
-      portalUrl: "https://github.com/wbreza/paddleboard/pulls/2",
-      providerId: "2"
+      portalUrl: "https://github.com/wbreza/paddleboard/pulls/2"
     };
 
     pullRequest = await pullRequestService.findSingle({ repositoryId: repo.id }) || await pullRequestService.save(pullRequest);
