@@ -10,14 +10,16 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
+    "clean": "shx rm -rf lib/",
     "start": "npm run test -- --watch",
+    "prelint": "npm run clean",
     "lint": "eslint src/**/*.ts",
     "lint:fix": "npm run lint -- --fix",
     "pretest": "npm run lint",
     "test": "jest",
     "test:ci": "npm run test -- --ci",
     "test:coverage": "npm run test -- --coverage",
-    "prebuild": "shx rm -rf lib/ && npm run test",
+    "prebuild": "npm run test",
     "build": "npx tsc"
   },
   "files": [

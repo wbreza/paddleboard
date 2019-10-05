@@ -4,9 +4,9 @@ import axios from "axios";
 export interface GitHubServiceOptions {
   appId: string;
   clientId: string;
-  clientSecret: string,
-  redirectUri: string,
-  signingKey: string,
+  clientSecret: string;
+  redirectUri: string;
+  signingKey: string;
   ttl?: number;
 };
 

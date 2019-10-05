@@ -1,4 +1,4 @@
-import { SharedKeyCredential, StorageURL, Pipeline, ServiceURL, QueueURL, MessagesURL, Aborter, MessagesEnqueueResponse } from "@azure/storage-queue";
+import { SharedKeyCredential, StorageURL, ServiceURL, QueueURL, MessagesURL, Aborter, MessagesEnqueueResponse } from "@azure/storage-queue";
 
 export interface QueueServiceOptions {
   account: string;
