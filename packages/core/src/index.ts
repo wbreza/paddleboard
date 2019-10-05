@@ -12,6 +12,7 @@ export * from "./services/pullRequestService";
 // Middlewares
 export * from "./middleware/userProfileValidationMiddleware";
 export * from "./middleware/repositoryValidationMiddleware";
+export * from "./middleware/categoryValidationMiddleware";
 export * from "./middleware/cosmosMiddleware";
 // Common
 export * from "./guard";

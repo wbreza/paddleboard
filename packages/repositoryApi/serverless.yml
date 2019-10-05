@@ -74,6 +74,27 @@ functions:
             - name: userId
               type: string
 
+  getRepositoryListByUserAndCategory:
+    handler: src/handlers/repository.getRepositoryListByUserAndCategory
+    events:
+      - http: true
+        x-azure-settings:
+          methods:
+            - GET
+          route: users/{userId}/categories/{categoryId}/repositories
+          authLevel: anonymous
+    apim:
+      api: user-profile-api
+      backend: user-profile-repository-backend
+      operations:
+        - method: GET
+          urlTemplate: /{userId}/categories/{categoryId}/repositories
+          templateParameters:
+            - name: userId
+              type: string
+            - name: categoryId
+              type: string
+
   getRepository:
     handler: src/handlers/repository.getRepository
     events:

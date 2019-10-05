@@ -1,16 +1,24 @@
 import { app, RepositoryApiContext } from "../app";
 import { config } from "../config"
-import { RepositoryService, UserValidationMiddleware, RepositoryValidationMiddleware, Repository } from "@paddleboard/core";
+import { RepositoryService, UserValidationMiddleware, RepositoryValidationMiddleware, CategoryValidationMiddleware, Repository } from "@paddleboard/core";
 import { CloudContext } from "@multicloud/sls-core";
 import { StorageQueueMiddleware } from "@multicloud/sls-azure";
 
 const middlewares = config();
 const userValidation = UserValidationMiddleware();
+const categoryValidation = CategoryValidationMiddleware();
 const repoValidation = RepositoryValidationMiddleware();
 
 export const getRepositoryListByUser = app.use([...middlewares, userValidation], async (context: RepositoryApiContext) => {
   const repoService = new RepositoryService();
   const repos = await repoService.getByUser(context.user.id);
+
+  context.send({ value: repos }, 200);
+});
+
+export const getRepositoryListByUserAndCategory = app.use([...middlewares, userValidation, categoryValidation], async (context: RepositoryApiContext) => {
+  const repoService = new RepositoryService();
+  const repos = await repoService.getByCategory(context.category.id);
 
   context.send({ value: repos }, 200);
 });
