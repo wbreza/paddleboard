@@ -109,3 +109,5 @@ obj
 
 # End of https://www.gitignore.io/api/node,visualstudiocode
 
+# Key files
+*.pem

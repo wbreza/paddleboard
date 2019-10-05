@@ -19,13 +19,14 @@ export interface Repository extends Entity {
   accountId: string;
   userId: string;
   name: string;
+  portalUrl: string;
   description?: string;
 }
 
 export interface PullRequest extends Entity {
   repositoryId: string;
   categoryId?: string;
-  providerId: string;
+  accountId: string;
   userId: string;
   name: string;
   description?: string;
@@ -36,12 +37,19 @@ export interface UserProfile extends Entity {
   email: string;
   firstName: string;
   lastName: string;
-  accounts: Account[];
+  accounts?: Account[];
 }
 
 export interface Account extends Entity {
+  userId: string;
+  providerType: ProviderType;
   providerId: string;
-  email: string;
-  accessToken: string;
-  refreshToken: string;
+  metadata: any;
 }
+
+export enum ProviderType {
+  GitHub = "github",
+  Azure = "azdo",
+  GitLab = "gitlab",
+  BitBucket = "bitbucket"
+};

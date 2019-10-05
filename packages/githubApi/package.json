@@ -1,5 +1,5 @@
 {
-  "name": "@paddleboard/userprofileapi",
+  "name": "@paddleboard/githubapi",
   "version": "1.0.0",
   "description": "> TODO: description",
   "author": "Wallace Breza <wallace@breza.me>",
@@ -24,9 +24,8 @@
     "test:coverage": "npm run test -- --coverage",
     "prebuild": "npm run clean && npm run test",
     "build": "npx tsc",
-    "preoffline": "npm run build",
-    "offline": "sls offline",
-    "pack": "cross-env NODE_ENV=production BABEL_ENV=production sls webpack",
+    "offline": "npm run build && sls offline",
+    "package": "cross-env NODE_ENV=production BABEL_ENV=production sls package",
     "deploy": "cross-env NODE_ENV=production BABEL_ENV=production sls deploy"
   },
   "bugs": {

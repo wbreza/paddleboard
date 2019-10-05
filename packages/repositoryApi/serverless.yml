@@ -9,6 +9,7 @@ provider:
   environment:
     COSMOS_ENDPOINT: ${env:COSMOS_ENDPOINT}
     COSMOS_KEY: ${env:COSMOS_KEY}
+    STORAGE_CONNECTION: ${env:STORAGE_CONNECTION}
   apim:
     name: wabrez-wus-dev-pdlbrd-apim
     apis:
@@ -54,22 +55,6 @@ plugins:
 
 functions:
   # Repositories
-  getRepositoryList:
-    handler: src/handlers/repository.getRepositoryList
-    events:
-      - http: true
-        x-azure-settings:
-          methods:
-            - GET
-          route: repositories
-          authLevel: anonymous
-    apim:
-      api: repository-api
-      backend: repository-backend
-      operations:
-        - method: GET
-          urlTemplate: /
-
   getRepositoryListByUser:
     handler: src/handlers/repository.getRepositoryListByUser
     events:
@@ -87,6 +72,27 @@ functions:
           urlTemplate: /{userId}/repositories
           templateParameters:
             - name: userId
+              type: string
+
+  getRepositoryListByUserAndCategory:
+    handler: src/handlers/repository.getRepositoryListByUserAndCategory
+    events:
+      - http: true
+        x-azure-settings:
+          methods:
+            - GET
+          route: users/{userId}/categories/{categoryId}/repositories
+          authLevel: anonymous
+    apim:
+      api: user-profile-api
+      backend: user-profile-repository-backend
+      operations:
+        - method: GET
+          urlTemplate: /{userId}/categories/{categoryId}/repositories
+          templateParameters:
+            - name: userId
+              type: string
+            - name: categoryId
               type: string
 
   getRepository:
@@ -117,14 +123,14 @@ functions:
         x-azure-settings:
           methods:
             - POST
-          route: repositories
+          route: users/{userId}/repositories
           authLevel: anonymous
     apim:
       api: repository-api
       backend: repository-backend
       operations:
         - method: POST
-          urlTemplate: /
+          urlTemplate: /{userId}/repositories
 
   putRepository:
     handler: src/handlers/repository.putRepository
@@ -133,14 +139,14 @@ functions:
         x-azure-settings:
           methods:
             - PUT
-          route: repositories/{repositoryId}
+          route: users/{userId}/repositories/{repositoryId}
           authLevel: anonymous
     apim:
       api: repository-api
       backend: repository-backend
       operations:
         - method: PUT
-          urlTemplate: /{repositoryId}
+          urlTemplate: /{userId}/repositories/{repositoryId}
           templateParameters:
             - name: repositoryId
               type: string
@@ -152,14 +158,14 @@ functions:
         x-azure-settings:
           methods:
             - PATCH
-          route: repositories/{repositoryId}
+          route: users/{userId}/repositories/{repositoryId}
           authLevel: anonymous
     apim:
       api: repository-api
       backend: repository-backend
       operations:
         - method: PATCH
-          urlTemplate: /{repositoryId}
+          urlTemplate: /{userId}/repositories/{repositoryId}
           templateParameters:
             - name: repositoryId
               type: string
@@ -171,14 +177,21 @@ functions:
         x-azure-settings:
           methods:
             - DELETE
-          route: repositories/{repositoryId}
+          route: users/{userId}/repositories/{repositoryId}
           authLevel: anonymous
     apim:
       api: repository-api
       backend: repository-backend
       operations:
         - method: DELETE
-          urlTemplate: /{repositoryId}
+          urlTemplate: /{userId}/repositories/{repositoryId}
           templateParameters:
             - name: repositoryId
               type: string
+  ingestRepository:
+    handler: src/handlers/repository.ingestRepository
+    events:
+      - queue: repositories
+        x-azure-settings:
+          name: message # Specifies which name it's available on `context`
+          connection: STORAGE_CONNECTION # App Setting/environment variable which contains Storage Account Connection String

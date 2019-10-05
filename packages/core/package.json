@@ -10,14 +10,16 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
+    "clean": "shx rm -rf lib/",
     "start": "npm run test -- --watch",
+    "prelint": "npm run clean",
     "lint": "eslint src/**/*.ts",
     "lint:fix": "npm run lint -- --fix",
     "pretest": "npm run lint",
     "test": "jest",
     "test:ci": "npm run test -- --ci",
     "test:coverage": "npm run test -- --coverage",
-    "prebuild": "shx rm -rf lib/ && npm run test",
+    "prebuild": "npm run test",
     "build": "npx tsc"
   },
   "files": [
@@ -27,14 +29,20 @@
   "license": "MIT",
   "dependencies": {
     "@azure/cosmos": "^3.3.0",
+    "@azure/storage-queue": "^10.3.0",
     "@multicloud/sls-core": "^0.1.1",
+    "axios": "^0.19.0",
     "dotenv": "^8.1.0",
+    "jsonwebtoken": "^8.5.1",
+    "node-rsa": "^1.0.6",
     "shortid": "^2.2.15"
   },
   "devDependencies": {
     "@types/dotenv": "^6.1.1",
     "@types/jest": "^24.0.13",
+    "@types/jsonwebtoken": "^8.3.4",
     "@types/node": "12.0.8",
+    "@types/node-rsa": "^1.0.0",
     "@types/shortid": "0.0.29",
     "@typescript-eslint/eslint-plugin": "^1.9.0",
     "@typescript-eslint/parser": "^1.9.0",

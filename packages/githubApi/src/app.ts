@@ -1,9 +1,9 @@
 import { App, CloudContext } from "@multicloud/sls-core";
 import { AzureModule } from "@multicloud/sls-azure";
-import { UserProfile } from "@paddleboard/core";
+import { GitHubService } from "@paddleboard/core";
 
-export interface UserProfileApiContext extends CloudContext {
-  user: UserProfile;
+export interface GitHubApiContext extends CloudContext {
+  github: GitHubService;
 }
 
 export const app = new App(new AzureModule);
