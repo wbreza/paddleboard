@@ -1,15 +1,15 @@
-import { CloudContext } from "@multicloud/sls-core";
 import { StorageQueueMiddleware } from "@multicloud/sls-azure";
-import { app } from "../app";
+import { app, GitHubApiContext } from "../app";
 import { config } from "../config"
-import { GitHubService, AccountService, ProviderType, QueueService, Repository, Account } from "@paddleboard/core";
+import { AccountService, ProviderType, QueueService, Repository, Account } from "@paddleboard/core";
+import { GitHubMiddleware } from "../middleware/githubMiddleware";
 
-const middlewares = config();
+const middlewares = [...config(), GitHubMiddleware()];
 
 /**
  * Called when the Github app is installed an authorized on an account
  */
-export const authorize = app.use(middlewares, async (context: CloudContext) => {
+export const authorize = app.use(middlewares, async (context: GitHubApiContext) => {
   const code = context.req.query.get("code");
   if (!code) {
     return context.send("Invalid request", 400);
@@ -24,16 +24,8 @@ export const authorize = app.use(middlewares, async (context: CloudContext) => {
   });
 
   const accountService = new AccountService();
-  const githubService = new GitHubService({
-    appId: process.env.GITHUB_APP_ID,
-    clientId: process.env.GITHUB_CLIENT_ID,
-    clientSecret: process.env.GITHUB_CLIENT_SECRET,
-    redirectUri: process.env.GITHUB_REDIRECT_URI,
-    signingKey: process.env.GITHUB_SIGNING_KEY
-  });
-
-  const userAccessToken = await githubService.getUserAccessToken(code);
-  const githubAccount = await githubService.getUserAccount(userAccessToken);
+  const userAccessToken = await context.github.getUserAccessToken(code);
+  const githubAccount = await context.github.getUserAccount(userAccessToken);
   const userAccount = await accountService.getByProvider(githubAccount.login, ProviderType.GitHub);
 
   const installPayload = {
@@ -50,28 +42,17 @@ export const authorize = app.use(middlewares, async (context: CloudContext) => {
 /**
  * Called when a github event fires (ex. pull request created / updated)
  */
-export const hook = app.use(middlewares, (context: CloudContext) => {
+export const hook = app.use(middlewares, (context: GitHubApiContext) => {
   context.send("OK", 200);
 });
 
 /**
  * Called when github app installations are created
  */
-export const install = app.use([StorageQueueMiddleware()], async (context: CloudContext) => {
-  if (!context.event.installationId) {
-    return context.send({ message: "installationId is required" }, 500);
+export const install = app.use([GitHubMiddleware(), StorageQueueMiddleware()], async (context: GitHubApiContext) => {
+  if (!(context.event && context.event.records)) {
+    return context.send({ message: "event is required" }, 500);
   }
-
-  const githubService = new GitHubService({
-    appId: process.env.GITHUB_APP_ID,
-    clientId: process.env.GITHUB_CLIENT_ID,
-    clientSecret: process.env.GITHUB_CLIENT_SECRET,
-    redirectUri: process.env.GITHUB_REDIRECT_URI,
-    signingKey: process.env.GITHUB_SIGNING_KEY
-  });
-
-  const account: Account = context.event.account;
-  const repositories = await githubService.getRepositories(context.event.installationId);
 
   const queueService = new QueueService({
     account: process.env.QUEUE_ACCOUNT_NAME,
@@ -79,23 +60,30 @@ export const install = app.use([StorageQueueMiddleware()], async (context: Cloud
     queueName: "repositories"
   });
 
-  // Queue repo tasks for each mapped repository
-  const tasks = repositories.map((githubRepo) => {
-    const repo: Repository = {
-      name: githubRepo.name,
-      description: githubRepo.description,
-      portalUrl: githubRepo.html_url,
-      accountId: account.id,
-      userId: account.userId
-    };
+  const events: [] = context.event.records;
 
-    const payload = {
-      account: account,
-      repository: repo
-    };
+  await events.forEachAsync(async (event: any) => {
+    const account: Account = event.body.account;
+    const repositories = await context.github.getRepositories(event.body.installationId);
 
-    return queueService.enqueue(payload);
+    // Queue repo tasks for each mapped repository
+    await repositories.mapAsync(async (githubRepo) => {
+      const repo: Repository = {
+        name: githubRepo.name,
+        description: githubRepo.description,
+        portalUrl: githubRepo.html_url,
+        accountId: account.id,
+        userId: account.userId
+      };
+
+      const payload = {
+        account: account,
+        repository: repo
+      };
+
+      await queueService.enqueue(payload);
+    });
   });
 
-  await Promise.all(tasks);
+  context.send(null, 204);
 });

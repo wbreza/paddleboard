@@ -9,6 +9,7 @@ provider:
   environment:
     COSMOS_ENDPOINT: ${env:COSMOS_ENDPOINT}
     COSMOS_KEY: ${env:COSMOS_KEY}
+    STORAGE_CONNECTION: ${env:STORAGE_CONNECTION}
   apim:
     name: wabrez-wus-dev-pdlbrd-apim
     apis:
@@ -166,3 +167,10 @@ functions:
           templateParameters:
             - name: repositoryId
               type: string
+  ingestRepository:
+    handler: src/handlers/repository.ingestRepository
+    events:
+      - queue: repositories
+        x-azure-settings:
+          name: message # Specifies which name it's available on `context`
+          connection: STORAGE_CONNECTION # App Setting/environment variable which contains Storage Account Connection String

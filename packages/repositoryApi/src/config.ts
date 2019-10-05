@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-import { CosmosMiddleware } from "@paddleboard/core";
+import { CosmosMiddleware, registerMixins } from "@paddleboard/core";
 import {
   LoggingServiceMiddleware,
   HTTPBindingMiddleware,
@@ -10,6 +10,7 @@ import {
 } from "@multicloud/sls-core";
 
 dotenv.config();
+registerMixins();
 const defaultLogger = new ConsoleLogger(LogLevel.VERBOSE);
 
 export const config = () => {

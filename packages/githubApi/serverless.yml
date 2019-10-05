@@ -7,6 +7,7 @@ provider:
   region: West US
   runtime: nodejs10.x
   environment:
+    STORAGE_CONNECTION: ${env:STORAGE_CONNECTION}
     COSMOS_ENDPOINT: ${env:COSMOS_ENDPOINT}
     COSMOS_KEY: ${env:COSMOS_KEY}
     QUEUE_ACCOUNT_NAME: ${env:QUEUE_ACCOUNT_NAME}
@@ -82,4 +83,12 @@ functions:
       operations:
         - method: POST
           urlTemplate: /hook
+
+  install:
+    handler: src/handlers/github.install
+    events:
+      - queue: github-installations
+        x-azure-settings:
+          name: message # Specifies which name it's available on `context`
+          connection: STORAGE_CONNECTION # App Setting/environment variable which contains Storage Account Connection String
 

@@ -15,9 +15,6 @@ export const CosmosMiddleware = () => async (context: CloudContext, next: () => 
     return;
   }
 
-    return;
-  }
-
   const value = context.res.body["value"];
 
   if (value instanceof Array) {

@@ -1,6 +1,8 @@
 import { app, RepositoryApiContext } from "../app";
 import { config } from "../config"
 import { RepositoryService, UserValidationMiddleware, RepositoryValidationMiddleware, Repository } from "@paddleboard/core";
+import { CloudContext } from "@multicloud/sls-core";
+import { StorageQueueMiddleware } from "@multicloud/sls-azure";
 
 const middlewares = config();
 const userValidation = UserValidationMiddleware();
@@ -42,8 +44,8 @@ export const putRepository = app.use([...middlewares, repoValidation], async (co
     userId: context.user.id
   };
 
-  const userService = new RepositoryService();
-  await userService.save(repoToSave);
+  const repoService = new RepositoryService();
+  await repoService.save(repoToSave);
 
   context.send(null, 204);
 });
@@ -56,8 +58,8 @@ export const patchRepository = app.use([...middlewares, repoValidation], async (
     userId: context.user.id
   };
 
-  const userService = new RepositoryService();
-  await userService.save(repoToSave);
+  const repoServcie = new RepositoryService();
+  await repoServcie.save(repoToSave);
 
   context.send(null, 204);
 });
@@ -65,6 +67,24 @@ export const patchRepository = app.use([...middlewares, repoValidation], async (
 export const deleteRepository = app.use([...middlewares, repoValidation], async (context: RepositoryApiContext) => {
   const userService = new RepositoryService();
   await userService.delete(context.repository.id, context.user.id);
+
+  context.send(null, 204);
+});
+
+export const ingestRepository = app.use([StorageQueueMiddleware()], async (context: CloudContext) => {
+  if (!(context.event && context.event.records)) {
+    return context.send({ message: "event is required" }, 500);
+  }
+
+  const repoService = new RepositoryService();
+  const events: [] = context.event.records;
+
+  await events.forEachAsync(async (event: any) => {
+    const existing = await repoService.findSingle({ accountId: event.body.account.id, name: event.body.repository.name });
+    if (!existing) {
+      await repoService.save(event.body.repository);
+    }
+  });
 
   context.send(null, 204);
 });

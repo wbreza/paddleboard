@@ -20,6 +20,7 @@ export class QueueService {
   }
 
   public async enqueue(payload: any): Promise<MessagesEnqueueResponse> {
-    return await this.messageUrl.enqueue(Aborter.none, JSON.stringify(payload));
+    const message = Buffer.from(JSON.stringify(payload)).toString("base64");
+    return await this.messageUrl.enqueue(Aborter.none, message);
   }
 }
