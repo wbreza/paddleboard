@@ -1,22 +1,22 @@
 import { app, RepositoryApiContext } from "../app";
 import { config } from "../config"
-import { RepositoryService, UserValidationMiddleware, RepositoryValidationMiddleware, CategoryValidationMiddleware, Repository } from "@paddleboard/core";
+import { RepositoryService, UserProfileValidationMiddleware, RepositoryValidationMiddleware, CategoryValidationMiddleware, Repository } from "@paddleboard/core";
 import { CloudContext } from "@multicloud/sls-core";
 import { StorageQueueMiddleware } from "@multicloud/sls-azure";
 
 const middlewares = config();
-const userValidation = UserValidationMiddleware();
+const userProfileValidation = UserProfileValidationMiddleware();
 const categoryValidation = CategoryValidationMiddleware();
 const repoValidation = RepositoryValidationMiddleware();
 
-export const getRepositoryListByUser = app.use([...middlewares, userValidation], async (context: RepositoryApiContext) => {
+export const getRepositoryListByUser = app.use([...middlewares, userProfileValidation], async (context: RepositoryApiContext) => {
   const repoService = new RepositoryService();
   const repos = await repoService.getByUser(context.user.id);
 
   context.send({ value: repos }, 200);
 });
 
-export const getRepositoryListByUserAndCategory = app.use([...middlewares, userValidation, categoryValidation], async (context: RepositoryApiContext) => {
+export const getRepositoryListByUserAndCategory = app.use([...middlewares, categoryValidation], async (context: RepositoryApiContext) => {
   const repoService = new RepositoryService();
   const repos = await repoService.getByCategory(context.category.id);
 
@@ -27,7 +27,7 @@ export const getRepository = app.use([...middlewares, repoValidation], (context:
   context.send({ value: context.repository }, 200);
 });
 
-export const postRepository = app.use([...middlewares, userValidation], async (context: RepositoryApiContext) => {
+export const postRepository = app.use([...middlewares, userProfileValidation], async (context: RepositoryApiContext) => {
   if (!context.req.body) {
     return context.send({ message: "repository is required" }, 400);
   }

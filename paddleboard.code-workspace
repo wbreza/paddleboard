@@ -11,6 +11,9 @@
 		},
 		{
 			"path": "packages\\githubApi"
+		},
+		{
+			"path": "packages\\categoryApi"
 		}
 	]
 }

@@ -1,4 +1,4 @@
-service: pdlbrd-repository-api
+service: pdlbrd-category-api
 
 provider:
   resourceGroup: wabrez-westus-dev-paddleboard
@@ -9,20 +9,19 @@ provider:
   environment:
     COSMOS_ENDPOINT: ${env:COSMOS_ENDPOINT}
     COSMOS_KEY: ${env:COSMOS_KEY}
-    STORAGE_CONNECTION: ${env:STORAGE_CONNECTION}
   apim:
     name: wabrez-wus-dev-pdlbrd-apim
     apis:
       - name: user-profile-api
         subscriptionRequired: false
         displayName: User Profile API
-        description: User Profile CRUD REST API
+        description: User Profile REST API
         protocols:
           - https
         path: users
         authorization: none
     backends:
-      - name: repository-backend
+      - name: category-backend
         url: api/users
     cors:
       allowCredentials: false
@@ -44,153 +43,125 @@ plugins:
   - serverless-webpack
 
 functions:
-  # Repositories
-  getRepositoryListByUser:
-    handler: src/handlers/repository.getRepositoryListByUser
+  # Categories
+  getCategoryListByUser:
+    handler: src/handlers/category.getCategoryListByUser
     events:
       - http: true
         x-azure-settings:
           methods:
             - GET
-          route: users/{userId}/repositories
+          route: users/{userId}/categories
           authLevel: anonymous
     apim:
       api: user-profile-api
-      backend: repository-backend
+      backend: category-backend
       operations:
         - method: GET
-          urlTemplate: /{userId}/repositories
+          urlTemplate: /{userId}/categories
           templateParameters:
             - name: userId
               type: string
 
-  getRepositoryListByUserAndCategory:
-    handler: src/handlers/repository.getRepositoryListByUserAndCategory
+  getCategory:
+    handler: src/handlers/category.getCategory
     events:
       - http: true
         x-azure-settings:
           methods:
             - GET
-          route: users/{userId}/categories/{categoryId}/repositories
+          route: users/{userId}/categories/{categoryId}
           authLevel: anonymous
     apim:
       api: user-profile-api
-      backend: repository-backend
+      backend: category-backend
       operations:
         - method: GET
-          urlTemplate: /{userId}/categories/{categoryId}/repositories
+          urlTemplate: /{userId}/categories/{categoryId}
           templateParameters:
             - name: userId
               type: string
             - name: categoryId
               type: string
 
-  getRepository:
-    handler: src/handlers/repository.getRepository
-    events:
-      - http: true
-        x-azure-settings:
-          methods:
-            - GET
-          route: users/{userId}/repositories/{repositoryId}
-          authLevel: anonymous
-    apim:
-      api: user-profile-api
-      backend: repository-backend
-      operations:
-        - method: GET
-          urlTemplate: /{userId}/repositories/{repositoryId}
-          templateParameters:
-            - name: userId
-              type: string
-            - name: repositoryId
-              type: string
-
-  postRepository:
-    handler: src/handlers/repository.postRepository
+  postCategory:
+    handler: src/handlers/category.postCategory
     events:
       - http: true
         x-azure-settings:
           methods:
             - POST
-          route: users/{userId}/repositories
+          route: users/{userId}/categories
           authLevel: anonymous
     apim:
       api: user-profile-api
-      backend: repository-backend
+      backend: category-backend
       operations:
         - method: POST
-          urlTemplate: /{userId}/repositories
+          urlTemplate: /{userId}/categories
           templateParameters:
             - name: userId
               type: string
 
-  putRepository:
-    handler: src/handlers/repository.putRepository
+  putCategory:
+    handler: src/handlers/category.putCategory
     events:
       - http: true
         x-azure-settings:
           methods:
             - PUT
-          route: users/{userId}/repositories/{repositoryId}
+          route: users/{userId}/categories/{categoryId}
           authLevel: anonymous
     apim:
       api: user-profile-api
-      backend: repository-backend
+      backend: category-backend
       operations:
         - method: PUT
-          urlTemplate: /{userId}/repositories/{repositoryId}
+          urlTemplate: /{userId}/categories/{categoryId}
           templateParameters:
             - name: userId
               type: string
-            - name: repositoryId
+            - name: categoryId
               type: string
 
-  patchRepository:
-    handler: src/handlers/repository.patchRepository
+  patchCategory:
+    handler: src/handlers/category.patchCategory
     events:
       - http: true
         x-azure-settings:
           methods:
             - PATCH
-          route: users/{userId}/repositories/{repositoryId}
+          route: users/{userId}/categories/{categoryId}
           authLevel: anonymous
     apim:
       api: user-profile-api
-      backend: repository-backend
+      backend: category-backend
       operations:
         - method: PATCH
-          urlTemplate: /{userId}/repositories/{repositoryId}
+          urlTemplate: /{userId}/categories/{categoryId}
           templateParameters:
             - name: userId
               type: string
-            - name: repositoryId
+            - name: categoryId
               type: string
 
-  deleteRepository:
-    handler: src/handlers/repository.deleteRepository
+  deleteCategory:
+    handler: src/handlers/category.deleteCategory
     events:
       - http: true
         x-azure-settings:
           methods:
             - DELETE
-          route: users/{userId}/repositories/{repositoryId}
+          route: users/{userId}/categories/{categoryId}
           authLevel: anonymous
     apim:
       api: user-profile-api
-      backend: repository-backend
+      backend: category-backend
       operations:
         - method: DELETE
-          urlTemplate: /{userId}/repositories/{repositoryId}
+          urlTemplate: /{userId}/categories/{categoryId}
           templateParameters:
             - name: userId
               type: string
-            - name: repositoryId
+            - name: categoryId
               type: string
-  ingestRepository:
-    handler: src/handlers/repository.ingestRepository
-    events:
-      - queue: repositories
-        x-azure-settings:
-          name: message # Specifies which name it's available on `context`
-          connection: STORAGE_CONNECTION # App Setting/environment variable which contains Storage Account Connection String

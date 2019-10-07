@@ -1,4 +1,4 @@
-service: pdlbrd-userprofile-api
+service: pdlbrd-user-profile-api
 
 provider:
   resourceGroup: wabrez-westus-dev-paddleboard
