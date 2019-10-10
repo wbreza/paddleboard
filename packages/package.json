@@ -1,0 +1,14 @@
+{
+  "name": "@paddleboard/dashboard",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "Wallace Breza",
+  "license": "MIT",
+  "devDependencies": {
+    "create-react-app": "^3.2.0"
+  }
+}
