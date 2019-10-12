@@ -33,7 +33,7 @@ export const JwtMiddleware = (options?: JwtMiddlewareOptions) => async (context:
       subject: decodedToken.sub,
       issuer: decodedToken.iss,
       audience: decodedToken.aud,
-      claims: decodedToken.scp.split(" ")
+      claims: (decodedToken.scp || "").split(" ")
     }
   }
 
