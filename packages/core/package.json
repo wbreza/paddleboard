@@ -7,6 +7,8 @@
     "url": "https://github.com/wbreza/paddleboard"
   },
   "keywords": [],
+  "author": "Wallace Breza",
+  "license": "MIT",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
@@ -25,8 +27,6 @@
   "files": [
     "lib/"
   ],
-  "author": "Wallace Breza",
-  "license": "MIT",
   "dependencies": {
     "@azure/cosmos": "^3.3.0",
     "@azure/storage-queue": "^10.3.0",
@@ -38,6 +38,7 @@
     "shortid": "^2.2.15"
   },
   "devDependencies": {
+    "@types/axios-mock-adapter": "^1.10.0",
     "@types/dotenv": "^6.1.1",
     "@types/jest": "^24.0.13",
     "@types/jsonwebtoken": "^8.3.4",
@@ -46,6 +47,7 @@
     "@types/shortid": "0.0.29",
     "@typescript-eslint/eslint-plugin": "^1.9.0",
     "@typescript-eslint/parser": "^1.9.0",
+    "axios-mock-adapter": "^1.17.0",
     "babel-jest": "^24.8.0",
     "babel-plugin-transform-typescript-metadata": "0.2.2",
     "babel-preset-react-app": "^9.0.0",

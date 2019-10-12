@@ -55,7 +55,8 @@ describe("Repository Data Service", (): void => {
       categoryId: category.id,
       accountId: githubAccount.id,
       userId: user.id,
-      name: "Paddleboard"
+      name: "Paddleboard",
+      portalUrl: "https://github.com/wbreza/paddleboard"
     };
 
     repo = await repoService.findSingle({ name: repo.name }) || await repoService.save(repo);

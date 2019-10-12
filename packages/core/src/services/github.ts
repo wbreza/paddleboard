@@ -30,10 +30,10 @@ export class GitHubService {
 
   public async getUserAccessToken(code: string): Promise<string> {
     const response = await axios.post("https://github.com/login/oauth/access_token", {
-      client_id: process.env.GITHUB_CLIENT_ID,
-      client_secret: process.env.GITHUB_CLIENT_SECRET,
       code: code,
-      redirect_uri: process.env.GITHUB_REDIRECT_URI,
+      client_id: process.env.GITHUB_CLIENT_ID, // eslint-disable-line
+      client_secret: process.env.GITHUB_CLIENT_SECRET, // eslint-disable-line
+      redirect_uri: process.env.GITHUB_REDIRECT_URI, // eslint-disable-line
     }, {
       headers: {
         "accept": "application/json"

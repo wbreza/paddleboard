@@ -4,19 +4,19 @@
 			"path": "packages\\core"
 		},
 		{
-			"path": "packages\\userProfileApi"
-		},
-		{
-			"path": "packages\\repositoryApi"
-		},
-		{
-			"path": "packages\\githubApi"
-		},
-		{
-			"path": "packages\\categoryApi"
-		},
-		{
 			"path": "packages\\dashboard"
+		},
+		{
+			"path": "packages\\api-userprofile
+		},
+		{
+			"path": "packages\\api-repository
+		},
+		{
+			"path": "packages\\api-github
+		},
+		{
+			"path": "packages\\api-category
 		}
 	]
 }
