@@ -1,16 +1,21 @@
 import React from 'react';
 import './App.css';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { Home } from './pages/home/home';
+import { Auth } from './pages/auth/auth';
 
-const App: React.FC = () => {
+const App: React.FunctionComponent = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src="/logo512.png" className="App-logo" alt="logo" />
-        <p>
-          Welcome to Paddleboard.
-        </p>
-      </header>
-    </div>
+    <Router>
+      <Switch>
+        <Route path="/auth/openid">
+          <Auth />
+        </Route>
+        <Route path="/">
+          <Home />
+        </Route>
+      </Switch>
+    </Router>
   );
 }
 
