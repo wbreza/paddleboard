@@ -1,5 +1,4 @@
 import React from "react";
-import axios from "axios";
 import { UserManager } from "oidc-client";
 
 export class Login extends React.Component {
@@ -16,24 +15,14 @@ export class Login extends React.Component {
       loadUserInfo: false,
       client_id: "ffce8ced-3cb0-411e-ba2b-2a6c4cf36470",
       prompt: "login",
-      authority: "https://paddleboard.b2clogin.com/paddleboard.onmicrosoft.com/v2.0/.well-known/openid-configuration?p=B2C_1_sign_up_sign_in",
+      authority: "https://paddleboard.b2clogin.com/paddleboard.onmicrosoft.com/v2.0/.well-known/openid-configuration?p=B2C_1_signup_signin",
       redirect_uri: `${window.location.origin}/auth/openid`,
       response_type: "id_token token",
       scope: "openid https://paddleboard.onmicrosoft.com/api/user.read.all"
     });
 
     try {
-      const user = await userManager.signinPopup();
-      axios.defaults.headers = {
-        authorization: `${user.token_type} ${user.access_token}`
-      };
-
-      const usersResponse = await axios.get("https://paddleboard.breza.io/api/users");
-      const reposResponse = await axios.get(`https://paddleboard.breza.io/api/users/${usersResponse.data.value[0].id}/repositories`);
-
-      console.log(user);
-      console.log(usersResponse.data);
-      console.log(reposResponse.data);
+      await userManager.signinRedirect();
     }
     catch (e) {
       console.log(e);
