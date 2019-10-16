@@ -1,5 +1,5 @@
 import { DataServiceBase, DataListOptions } from "./dataService";
-import { Account, ProviderType } from "../models/app";
+import { Account } from "../models/app";
 
 export class AccountService extends DataServiceBase<Account> {
   public constructor() {
@@ -20,7 +20,7 @@ export class AccountService extends DataServiceBase<Account> {
     return await this.find({ userId }, options);
   }
 
-  public async getByProvider(providerId: string, providerType: ProviderType): Promise<Account> {
+  public async getByProvider(providerId: string, providerType: string): Promise<Account> {
     return await this.findSingle({ providerId, providerType });
   }
 }

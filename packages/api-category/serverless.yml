@@ -20,9 +20,14 @@ provider:
           - https
         path: users
         authorization: none
-    backends:
-      - name: category-backend
-        url: api/users
+      - name: current-user-api
+        subscriptionRequired: false
+        displayName: CurrentUser API
+        description: CurrentUser REST API
+        protocols:
+          - https
+        path: user
+        authorization: none
     cors:
       allowCredentials: false
       allowedOrigins:
@@ -55,13 +60,27 @@ functions:
           authLevel: function
     apim:
       api: user-profile-api
-      backend: category-backend
       operations:
         - method: GET
           urlTemplate: /{userId}/categories
           templateParameters:
             - name: userId
               type: string
+
+  getCategoryListByCurrentUser:
+    handler: src/handlers/category.getCategoryListByUser
+    events:
+      - http: true
+        x-azure-settings:
+          methods:
+            - GET
+          route: user/categories
+          authLevel: function
+    apim:
+      api: current-user-api
+      operations:
+        - method: GET
+          urlTemplate: /categories
 
   getCategory:
     handler: src/handlers/category.getCategory
@@ -74,13 +93,30 @@ functions:
           authLevel: function
     apim:
       api: user-profile-api
-      backend: category-backend
       operations:
         - method: GET
           urlTemplate: /{userId}/categories/{categoryId}
           templateParameters:
             - name: userId
               type: string
+            - name: categoryId
+              type: string
+
+  getCategoryByCurrentUser:
+    handler: src/handlers/category.getCategory
+    events:
+      - http: true
+        x-azure-settings:
+          methods:
+            - GET
+          route: user/categories/{categoryId}
+          authLevel: function
+    apim:
+      api: current-user-api
+      operations:
+        - method: GET
+          urlTemplate: /categories/{categoryId}
+          templateParameters:
             - name: categoryId
               type: string
 
@@ -95,7 +131,6 @@ functions:
           authLevel: function
     apim:
       api: user-profile-api
-      backend: category-backend
       operations:
         - method: POST
           urlTemplate: /{userId}/categories
@@ -114,7 +149,6 @@ functions:
           authLevel: function
     apim:
       api: user-profile-api
-      backend: category-backend
       operations:
         - method: PUT
           urlTemplate: /{userId}/categories/{categoryId}
@@ -135,7 +169,6 @@ functions:
           authLevel: function
     apim:
       api: user-profile-api
-      backend: category-backend
       operations:
         - method: PATCH
           urlTemplate: /{userId}/categories/{categoryId}
@@ -156,7 +189,6 @@ functions:
           authLevel: function
     apim:
       api: user-profile-api
-      backend: category-backend
       operations:
         - method: DELETE
           urlTemplate: /{userId}/categories/{categoryId}

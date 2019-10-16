@@ -42,7 +42,7 @@ export interface UserProfile extends Entity {
 
 export interface Account extends Entity {
   userId: string;
-  providerType: ProviderType;
+  providerType: string;
   providerId: string;
   metadata: any;
 }

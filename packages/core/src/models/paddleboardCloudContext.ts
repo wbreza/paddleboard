@@ -14,6 +14,8 @@ export interface PaddleboardIdentity {
   subject: string;
   firstName: string;
   lastName: string;
+  email: string;
+  provider: string;
   scopes: string[];
   claims: { [key: string]: any };
 }

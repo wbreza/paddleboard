@@ -1,6 +1,6 @@
 import { app } from "../app";
 import { config } from "../config"
-import { PaddleboardCloudContext, UserProfileService, UserProfileValidationMiddleware } from "@paddleboard/core";
+import { PaddleboardCloudContext, UserProfileService, UserProfileValidationMiddleware, AccountService, UserProfile } from "@paddleboard/core";
 
 const middlewares = config();
 const userValidation = UserProfileValidationMiddleware();
@@ -59,4 +59,56 @@ export const deleteUserProfile = app.use([...middlewares, userValidation], async
   await userService.delete(context.user.id);
 
   context.send(null, 204);
+});
+
+export const getCurrentUserProfile = app.use(middlewares, async (context: PaddleboardCloudContext) => {
+  if (!context.user) {
+    return context.send({ message: "User not found" }, 404);
+  }
+
+  const accountService = new AccountService();
+
+  const user: UserProfile = {
+    ...context.user,
+    accounts: await accountService.getByUser(context.user.id)
+  };
+
+  context.send({ value: user }, 200);
+});
+
+export const postCurrentUserProfile = app.use(middlewares, async (context: PaddleboardCloudContext) => {
+  const userService = new UserProfileService();
+  const accountService = new AccountService();
+
+  let account = await accountService.getByProvider(context.identity.subject, context.identity.provider);
+  let user = await userService.getByEmail(context.identity.email);
+
+  if (account && user && account.userId !== user.id) {
+    return context.send({ message: "Account is already associated with another account" }, 409);
+  }
+
+  if (!user) {
+    user = await userService.save({
+      email: context.identity.email,
+      firstName: context.identity.firstName,
+      lastName: context.identity.lastName,
+    });
+  }
+
+  user.accounts = await accountService.getByUser(user.id);
+
+  if (!account) {
+    account = {
+      providerId: context.identity.subject,
+      providerType: context.identity.provider,
+      userId: user.id,
+      metadata: context.identity
+    };
+
+    account = await accountService.save(account);
+    user.accounts.push(account);
+  }
+
+  context.res.headers.set("location", "https://paddleboard.breza.io/api/user");
+  context.send({ value: user }, 200);
 });

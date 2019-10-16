@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-import { CosmosMiddleware, UserProfileValidationMiddleware, registerMixins, JwtMiddleware } from "@paddleboard/core";
+import { CosmosMiddleware, UserProfileValidationMiddleware, registerMixins, JwtMiddleware, CurrentUserMiddleware } from "@paddleboard/core";
 import {
   LoggingServiceMiddleware,
   HTTPBindingMiddleware,
@@ -20,6 +20,7 @@ export const config = () => {
     ExceptionMiddleware({ log: defaultLogger.log as any }),
     HTTPBindingMiddleware(),
     JwtMiddleware(),
+    CurrentUserMiddleware(),
     UserProfileValidationMiddleware(),
     CosmosMiddleware(),
   ];

@@ -30,7 +30,9 @@ export const JwtMiddleware = (options?: JwtMiddlewareOptions) => async (context:
     context.identity = {
       firstName: decodedToken.given_name,
       lastName: decodedToken.family_name,
+      email: decodedToken.emails ? decodedToken.emails[0] : "",
       subject: decodedToken.sub,
+      provider: decodedToken.idp,
       issuer: decodedToken.iss,
       audience: decodedToken.aud,
       scopes: (decodedToken.scp || "").split(" "),

@@ -20,12 +20,8 @@ export class Auth extends React.Component {
     };
 
     try {
-      const usersResponse = await axios.get("https://paddleboard.breza.io/api/users");
-      const reposResponse = await axios.get(`https://paddleboard.breza.io/api/users/${usersResponse.data.value[0].id}/repositories`);
-
-      console.log(user);
-      console.log(usersResponse.data);
-      console.log(reposResponse.data);
+      const userResponse = await axios.post(`${process.env.REACT_APP_API_HOST}/api/user`);
+      console.log(userResponse.data);
     }
     catch (e) {
       console.log(e);

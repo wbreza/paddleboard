@@ -20,9 +20,19 @@ provider:
           - https
         path: users
         authorization: none
+      - name: current-user-api
+        subscriptionRequired: false
+        displayName: CurrentUser API
+        description: CurrentUser REST API
+        protocols:
+          - https
+        path: user
+        authorization: none
     backends:
       - name: user-profile-backend
         url: api/users
+      - name: current-user-backend
+        url: api/user
     cors:
       allowCredentials: false
       allowedOrigins:
@@ -79,6 +89,22 @@ functions:
             - name: userId
               type: string
 
+  getCurrentUserProfile:
+    handler: src/handlers/userProfile.getCurrentUserProfile
+    events:
+      - http: true
+        x-azure-settings:
+          methods:
+            - GET
+          route: user
+          authLevel: function
+    apim:
+      api: current-user-api
+      backend: current-user-backend
+      operations:
+        - method: GET
+          urlTemplate: /
+
   postUserProfile:
     handler: src/handlers/userProfile.postUserProfile
     events:
@@ -91,6 +117,22 @@ functions:
     apim:
       api: user-profile-api
       backend: user-profile-backend
+      operations:
+        - method: POST
+          urlTemplate: /
+
+  postCurrentUserProfile:
+    handler: src/handlers/userProfile.postCurrentUserProfile
+    events:
+      - http: true
+        x-azure-settings:
+          methods:
+            - POST
+          route: user
+          authLevel: function
+    apim:
+      api: current-user-api
+      backend: current-user-backend
       operations:
         - method: POST
           urlTemplate: /

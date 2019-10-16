@@ -16,6 +16,7 @@ export * from "./middleware/repositoryValidationMiddleware";
 export * from "./middleware/categoryValidationMiddleware";
 export * from "./middleware/cosmosMiddleware";
 export * from "./middleware/jwtMiddleware";
+export * from "./middleware/currentUserMiddleware";
 // Common
 export * from "./guard";
 export * from "./extensions/mixins";
