@@ -28,6 +28,13 @@ steps:
     workingDir: 'packages/api-userprofile'
 
 - task: Npm@1
+  displayName: 'Linting & Testing'
+  inputs:
+    command: 'custom'
+    workingDir: 'packages/api-userprofile'
+    customCommand: 'run test'
+
+- task: Npm@1
   displayName: 'Package'
   inputs:
     command: 'custom'
