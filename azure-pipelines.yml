@@ -22,14 +22,14 @@ steps:
 
 - task: Npm@1
   inputs:
-    command: 'install'
+    command: 'ci'
     workingDir: 'packages/dashboard'
 
 - task: Npm@1
   inputs:
     command: 'custom'
     workingDir: 'packages/dashboard'
-    customCommand: 'build'
+    customCommand: 'run build'
 
 - task: CopyFiles@2
   inputs:
