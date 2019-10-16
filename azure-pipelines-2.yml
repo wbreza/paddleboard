@@ -10,14 +10,14 @@ pool:
   vmImage: 'windows-latest'
 
 steps:
-  - task: DownloadBuildArtifacts@0
-    inputs:
-      buildType: 'specific'
-      project: 'b0fbe943-30f5-48ce-9355-aea349350bd3'
-      pipeline: '1'
-      buildVersionToDownload: 'latest'
-      downloadType: 'specific'
-      downloadPath: '$(System.ArtifactsDirectory)'
+- task: DownloadBuildArtifacts@0
+  inputs:
+    buildType: 'specific'
+    project: 'b0fbe943-30f5-48ce-9355-aea349350bd3'
+    pipeline: '1'
+    buildVersionToDownload: 'latest'
+    downloadType: 'specific'
+    downloadPath: '$(System.ArtifactsDirectory)'
 
 - task: AzureFileCopy@3
   inputs:
