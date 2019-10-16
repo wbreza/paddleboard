@@ -29,6 +29,11 @@ provider:
           - https
         path: user
         authorization: none
+    backends:
+      - name: repo-user-profile-backend
+        url: api/users
+      - name: repo-current-user-backend
+        url: api/user
     cors:
       allowCredentials: false
       allowedOrigins:
@@ -61,6 +66,7 @@ functions:
           authLevel: function
     apim:
       api: user-profile-api
+      backend: repo-user-profile-backend
       operations:
         - method: GET
           urlTemplate: /{userId}/repositories
@@ -79,6 +85,7 @@ functions:
           authLevel: function
     apim:
       api: current-user-api
+      backend: repo-current-user-backend
       operations:
         - method: GET
           urlTemplate: /repositories
@@ -94,6 +101,7 @@ functions:
           authLevel: function
     apim:
       api: user-profile-api
+      backend: repo-user-profile-backend
       operations:
         - method: GET
           urlTemplate: /{userId}/categories/{categoryId}/repositories
@@ -114,6 +122,7 @@ functions:
           authLevel: function
     apim:
       api: current-user-api
+      backend: repo-current-user-backend
       operations:
         - method: GET
           urlTemplate: /categories/{categoryId}/repositories
@@ -132,6 +141,7 @@ functions:
           authLevel: function
     apim:
       api: user-profile-api
+      backend: repo-user-profile-backend
       operations:
         - method: GET
           urlTemplate: /{userId}/repositories/{repositoryId}
@@ -152,6 +162,7 @@ functions:
           authLevel: function
     apim:
       api: current-user-api
+      backend: repo-current-user-backend
       operations:
         - method: GET
           urlTemplate: /repositories/{repositoryId}
@@ -170,6 +181,7 @@ functions:
           authLevel: function
     apim:
       api: user-profile-api
+      backend: repo-user-profile-backend
       operations:
         - method: POST
           urlTemplate: /{userId}/repositories
@@ -188,6 +200,7 @@ functions:
           authLevel: function
     apim:
       api: user-profile-api
+      backend: repo-user-profile-backend
       operations:
         - method: PUT
           urlTemplate: /{userId}/repositories/{repositoryId}
@@ -208,6 +221,7 @@ functions:
           authLevel: function
     apim:
       api: user-profile-api
+      backend: repo-user-profile-backend
       operations:
         - method: PATCH
           urlTemplate: /{userId}/repositories/{repositoryId}
@@ -228,6 +242,7 @@ functions:
           authLevel: function
     apim:
       api: user-profile-api
+      backend: repo-user-profile-backend
       operations:
         - method: DELETE
           urlTemplate: /{userId}/repositories/{repositoryId}
