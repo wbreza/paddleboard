@@ -4,7 +4,13 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
 trigger:
-- master
+  branches:
+    include:
+      - master
+      - dev
+  paths:
+    include:
+      - packages/dashboard
 
 pool:
   vmImage: 'ubuntu-latest'
