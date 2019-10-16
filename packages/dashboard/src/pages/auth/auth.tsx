@@ -20,6 +20,8 @@ export class Auth extends React.Component {
     };
 
     try {
+      console.log(user);
+
       const userResponse = await axios.post(`${process.env.REACT_APP_API_HOST}/api/user`);
       console.log(userResponse.data);
     }

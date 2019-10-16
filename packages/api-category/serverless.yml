@@ -28,6 +28,11 @@ provider:
           - https
         path: user
         authorization: none
+    backends:
+      - name: category-user-profile-backend
+        url: api/users
+      - name: category-current-user-backend
+        url: api/user
     cors:
       allowCredentials: false
       allowedOrigins:
@@ -60,6 +65,7 @@ functions:
           authLevel: function
     apim:
       api: user-profile-api
+      backend: category-user-profile-backend
       operations:
         - method: GET
           urlTemplate: /{userId}/categories
@@ -78,6 +84,7 @@ functions:
           authLevel: function
     apim:
       api: current-user-api
+      backend: category-current-user-backend
       operations:
         - method: GET
           urlTemplate: /categories
@@ -93,6 +100,7 @@ functions:
           authLevel: function
     apim:
       api: user-profile-api
+      backend: category-user-profile-backend
       operations:
         - method: GET
           urlTemplate: /{userId}/categories/{categoryId}
@@ -113,6 +121,7 @@ functions:
           authLevel: function
     apim:
       api: current-user-api
+      backend: category-current-user-backend
       operations:
         - method: GET
           urlTemplate: /categories/{categoryId}
@@ -131,6 +140,7 @@ functions:
           authLevel: function
     apim:
       api: user-profile-api
+      backend: category-user-profile-backend
       operations:
         - method: POST
           urlTemplate: /{userId}/categories
@@ -149,6 +159,7 @@ functions:
           authLevel: function
     apim:
       api: user-profile-api
+      backend: category-user-profile-backend
       operations:
         - method: PUT
           urlTemplate: /{userId}/categories/{categoryId}
@@ -169,6 +180,7 @@ functions:
           authLevel: function
     apim:
       api: user-profile-api
+      backend: category-user-profile-backend
       operations:
         - method: PATCH
           urlTemplate: /{userId}/categories/{categoryId}
@@ -189,6 +201,7 @@ functions:
           authLevel: function
     apim:
       api: user-profile-api
+      backend: category-user-profile-backend
       operations:
         - method: DELETE
           urlTemplate: /{userId}/categories/{categoryId}
