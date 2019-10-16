@@ -22,19 +22,18 @@ steps:
 
 - task: Npm@1
   inputs:
-    command: 'custom'
-    workingDir: '/packages/dashboard'
-    customCommand: 'build'
+    command: 'install'
+    workingDir: 'packages/dashboard'
 
 - task: Npm@1
   inputs:
     command: 'custom'
-    workingDir: '/packages/dashboard'
+    workingDir: 'packages/dashboard'
     customCommand: 'build'
 
 - task: CopyFiles@2
   inputs:
-    SourceFolder: '/packages/dashboard/build'
+    SourceFolder: 'packages/dashboard/build'
     Contents: '**'
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
