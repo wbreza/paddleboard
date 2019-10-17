@@ -12,6 +12,8 @@ trigger:
     include:
       - packages/dashboard
 
+pr: none
+
 pool:
   vmImage: 'ubuntu-latest'
 

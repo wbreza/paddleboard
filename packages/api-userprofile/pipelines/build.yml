@@ -12,6 +12,8 @@ trigger:
     include:
       - packages/api-userprofile
 
+pr: none
+
 variables:
   - group: BackendResources
 

@@ -12,6 +12,8 @@ trigger:
     include:
       - packages/core
 
+pr: none
+
 variables:
   - group: BackendResources
   - group: GithubCredentials
