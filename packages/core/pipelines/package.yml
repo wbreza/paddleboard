@@ -22,6 +22,9 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
+- checkout: self
+  persistCredentials: true
+
 - task: NodeTool@0
   inputs:
     versionSpec: '10.x'
@@ -48,6 +51,17 @@ steps:
     GITHUB_REDIRECT_URI: $(GITHUB-REDIRECT-URI)
     GITHUB_SIGNING_KEY: $(GITHUB-SIGNING-KEY)
 
+- task: Bash@3
+  name: BumpNpmVersion
+  displayName: Bump NPM Version
+  inputs:
+    targetType: filePath
+    filePath: ./scripts/version.sh
+    arguments: '@paddleboard/core'
+    workingDirectory: packages/core
+  env:
+    SOURCE_BRANCH: $(Build.SourceBranch)
+
 - task: Npm@1
   displayName: 'Build'
   inputs:
@@ -62,3 +76,16 @@ steps:
     GITHUB_CLIENT_SECRET: $(GITHUB-CLIENT-SECRET)
     GITHUB_REDIRECT_URI: $(GITHUB-REDIRECT-URI)
     GITHUB_SIGNING_KEY: $(GITHUB-SIGNING-KEY)
+
+- task: Npm@1
+  displayName: 'Package NPM Package'
+  inputs:
+    command: 'custom'
+    workingDir: 'packages/core'
+    customCommand: 'pack'
+
+- task: PublishPipelineArtifact@1
+  displayName: 'Publish Build Artifact'
+  inputs:
+    targetPath: 'paddleboard-core-1.0.0.tgz'
+    artifactName: 'core'
