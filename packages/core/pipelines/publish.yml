@@ -35,7 +35,7 @@ steps:
 - task: Npm@1
   displayName: 'Publish NPM Package'
   inputs:
-    command: 'custom'
+    command: 'publish'
     publishEndpoint: 'NPM'
     workingDir: 'packages/core'
-    customCommand: 'publish $(System.ArtifactsDirectory)/core/paddleboard-core-1.0.0.tgz --access public'
+    customCommand: '$(System.ArtifactsDirectory)/core/paddleboard-core-1.0.0.tgz --access public'
