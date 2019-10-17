@@ -29,8 +29,6 @@ git commit -m "release: Bumping NPM package ${PACKAGE_NAME} ${NPM_RELEASE_TYPE} 
 SHA=`git rev-parse HEAD`
 
 git tag ${PACKAGE_NAME}-${NPM_VERSION}
-
-git remote add authOrigin git@github.com:wbreza/paddleboard.git
-git push authOrigin ${SOURCE_BRANCH_NAME} --tags
+git push origin ${SOURCE_BRANCH_NAME} --tags
 
 echo Pushed new tag: ${PACKAGE_NAME}-${NPM_VERSION} @ SHA: ${SHA:0:8}
