@@ -24,7 +24,7 @@ steps:
   inputs:
     buildType: 'specific'
     project: 'paddleboard'
-    pipeline: 'Build.Dashboard'
+    pipeline: 'Build.Core'
     specificBuildWithTriggering: true
     buildVersionToDownload: 'latestFromBranch'
     branchName: 'refs/heads/master'
