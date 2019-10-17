@@ -16,7 +16,7 @@ provider:
     GITHUB_CLIENT_ID: ${env:GITHUB_CLIENT_ID}
     GITHUB_CLIENT_SECRET: ${env:GITHUB_CLIENT_SECRET}
     GITHUB_REDIRECT_URI: ${env:GITHUB_REDIRECT_URI}
-    GITHUB_SIGNING_KEY: ${file(github.pem)}
+    GITHUB_SIGNING_KEY: ${env:GITHUB_SIGNING_KEY}
   apim:
     name: wabrez-wus-dev-pdlbrd-apim
     apis:

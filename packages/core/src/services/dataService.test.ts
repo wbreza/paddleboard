@@ -6,7 +6,7 @@ import { AccountService } from "./accountService";
 import { UserProfile, Repository, Category, PullRequest, Account, ProviderType } from "../models/app";
 
 describe("Repository Data Service", (): void => {
-  it("CRUD operations", async (): Promise<void> => {
+  xit("CRUD operations", async (): Promise<void> => {
     const userProfileService = new UserProfileService();
     const repoService = new RepositoryService();
     const categoryService = new CategoryService();

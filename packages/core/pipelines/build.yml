@@ -12,6 +12,10 @@ trigger:
     include:
       - packages/core
 
+variables:
+  - group: BackendResources
+  - group: GithubCredentials
+
 pool:
   vmImage: 'ubuntu-latest'
 
@@ -33,6 +37,14 @@ steps:
     command: 'custom'
     workingDir: 'packages/core'
     customCommand: 'run test'
+  env:
+    COSMOS_ENDPOINT: $(COSMOS-ENDPOINT)
+    COSMOS_KEY: $(COSMOS-KEY)
+    GITHUB_APP_ID: $(GITHUB-APP-ID)
+    GITHUB_CLIENT_ID: $(GITHUB-CLIENT-ID)
+    GITHUB_CLIENT_SECRET: $(GITHUB-CLIENT-SECRET)
+    GITHUB_REDIRECT_URI: $(GITHUB-REDIRECT-URI)
+    GITHUB_SIGNING_KEY: $(GITHUB-SIGNING-KEY)
 
 - task: Npm@1
   displayName: 'Build'
@@ -40,6 +52,14 @@ steps:
     command: 'custom'
     workingDir: 'packages/core'
     customCommand: 'run build'
+  env:
+    COSMOS_ENDPOINT: $(COSMOS-ENDPOINT)
+    COSMOS_KEY: $(COSMOS-KEY)
+    GITHUB_APP_ID: $(GITHUB-APP-ID)
+    GITHUB_CLIENT_ID: $(GITHUB-CLIENT-ID)
+    GITHUB_CLIENT_SECRET: $(GITHUB-CLIENT-SECRET)
+    GITHUB_REDIRECT_URI: $(GITHUB-REDIRECT-URI)
+    GITHUB_SIGNING_KEY: $(GITHUB-SIGNING-KEY)
 
 - task: Npm@1
   displayName: 'Package NPM Package'

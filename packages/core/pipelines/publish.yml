@@ -1,0 +1,32 @@
+# ASP.NET
+# Build and test ASP.NET projects.
+# Add steps that publish symbols, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
+
+trigger: none
+
+pool:
+  vmImage: 'windows-latest'
+
+steps:
+- task: DownloadBuildArtifacts@0
+  displayName: 'Download Build Artifact'
+  inputs:
+    buildType: 'specific'
+    project: 'paddleboard'
+    pipeline: 'Build.Dashboard'
+    specificBuildWithTriggering: true
+    buildVersionToDownload: 'latestFromBranch'
+    branchName: 'refs/heads/master'
+    artifactName: 'dashboard'
+    downloadType: 'single'
+    downloadPath: '$(System.ArtifactsDirectory)'
+
+- task: AzureFileCopy@3
+  displayName: 'Publish Build Artifact to Blob Storage'
+  inputs:
+    SourcePath: '$(System.ArtifactsDirectory)/dashboard'
+    azureSubscription: 'PELITTLE TEAM - CSE DWR(d36d0808-a967-4f73-9fdc-32ea232fc81d)'
+    Destination: 'AzureBlob'
+    storage: 'wabrezwusdevpdlbrd'
+    ContainerName: '$web'

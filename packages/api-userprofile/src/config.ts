@@ -1,4 +1,3 @@
-import dotenv from "dotenv";
 import { CosmosMiddleware, JwtMiddleware, CurrentUserMiddleware } from "@paddleboard/core";
 import {
   LoggingServiceMiddleware,
@@ -9,7 +8,6 @@ import {
   LogLevel,
 } from "@multicloud/sls-core";
 
-dotenv.config();
 const defaultLogger = new ConsoleLogger(LogLevel.VERBOSE);
 
 export const config = () => {
