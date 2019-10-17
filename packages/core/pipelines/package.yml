@@ -56,7 +56,7 @@ steps:
   displayName: Bump NPM Version
   inputs:
     targetType: filePath
-    filePath: ./scripts/version.sh
+    filePath: ./packages/core/scripts/version.sh
     arguments: '@paddleboard/core'
     workingDirectory: packages/core
   env:
