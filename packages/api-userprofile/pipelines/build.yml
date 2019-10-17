@@ -52,6 +52,9 @@ steps:
     command: 'custom'
     workingDir: 'packages/api-userprofile'
     customCommand: 'run package'
+  env:
+    COSMOS_ENDPOINT: $(SECRET_COSMOS-ENDPOINT)
+    COSMOS_KEY: $(SECRET_COSMOS-KEY)
 
 - task: CopyFiles@2
   displayName: 'Prepare build artifact'
