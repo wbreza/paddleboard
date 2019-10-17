@@ -30,8 +30,8 @@ steps:
     targetType: 'inline'
     script: |
       set -e
-      export COSMOS_ENDPOINT=$(COSMOS-ENDPOINT)
-      export COSMOS_KEY=$(COSMOS-KEY)
+      export COSMOS_ENDPOINT=$(SECRET_COSMOS-ENDPOINT)
+      export COSMOS_KEY=$(SECRET_COSMOS-KEY)
 
 - task: Npm@1
   displayName: 'Install dependencies'
