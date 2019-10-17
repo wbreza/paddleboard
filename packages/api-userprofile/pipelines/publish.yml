@@ -35,6 +35,7 @@ steps:
   displayName: 'Deploying Serverless Azure Functions'
   inputs:
     targetType: 'inline'
+    workingDirectory: 'packages/api-userprofile'
     script: |
       set -e
       npx serverless deploy --package $(System.ArtifactsDirectory)/api-userprofile/pdlbrd-user-profile-api.zip
