@@ -8,7 +8,6 @@ NPM_RELEASE_TYPE=${2-"prerelease"}
 SOURCE_BRANCH_NAME=${SOURCE_BRANCH/refs\/heads\/}
 
 # Configure git to commit as Azure Dev Ops
-git config --local --add url."git@github.com:".insteadOf "https://github.com/"
 git config --local user.email "Paddleboard Admin"
 git config --local user.name "paddleboard@breza.io"
 
