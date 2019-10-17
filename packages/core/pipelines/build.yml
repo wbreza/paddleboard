@@ -64,8 +64,9 @@ steps:
 - task: Npm@1
   displayName: 'Package NPM Package'
   inputs:
-    command: 'pack'
+    command: 'custom'
     workingDir: 'packages/core'
+    customCommand: 'run pack'
 
 - task: CopyFiles@2
   displayName: 'Prepare build artifact'
