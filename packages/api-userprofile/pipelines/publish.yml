@@ -18,6 +18,12 @@ steps:
     versionSpec: '10.x'
   displayName: 'Install Node.js'
 
+- task: Npm@1
+  displayName: 'Install dependencies'
+  inputs:
+    command: 'ci'
+    workingDir: 'packages/api-userprofile'
+
 - task: DownloadBuildArtifacts@0
   displayName: 'Download Build Artifact'
   inputs:

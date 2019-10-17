@@ -24,15 +24,6 @@ steps:
     versionSpec: '10.x'
   displayName: 'Install Node.js'
 
-- task: Bash@3
-  displayName: 'Setting environment variables'
-  inputs:
-    targetType: 'inline'
-    script: |
-      set -e
-      export COSMOS_ENDPOINT=$(SECRET_COSMOS-ENDPOINT)
-      export COSMOS_KEY=$(SECRET_COSMOS-KEY)
-
 - task: Npm@1
   displayName: 'Install dependencies'
   inputs:
