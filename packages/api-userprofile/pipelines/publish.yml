@@ -25,18 +25,16 @@ steps:
     command: 'ci'
     workingDir: 'packages/api-userprofile'
 
-- task: DownloadBuildArtifacts@0
+- task: DownloadPipelineArtifact@2
   displayName: 'Download Build Artifact'
   inputs:
     buildType: 'specific'
-    project: 'paddleboard'
-    pipeline: 'Build.UserProfileAPI'
-    specificBuildWithTriggering: true
-    buildVersionToDownload: 'latestFromBranch'
-    branchName: 'refs/heads/master'
+    project: '$(System.TeamProjectId)'
+    definition: 10
+    pipeline: 10
     artifactName: 'api-userprofile'
-    downloadType: 'single'
-    downloadPath: '$(System.ArtifactsDirectory)'
+    targetPath: '$(Pipeline.Workspace)/artifact'
+    buildVersionToDownload: latest
 
 - task: Bash@3
   displayName: 'Deploying Serverless Azure Functions'
@@ -45,7 +43,7 @@ steps:
     workingDirectory: 'packages/api-userprofile'
     script: |
       set -e
-      npx serverless deploy --package $(System.ArtifactsDirectory)/api-userprofile/pdlbrd-user-profile-api.zip
+      npx serverless deploy --package $(Pipeline.Workspace)/artifact/pdlbrd-user-profile-api.zip
   env:
     COSMOS_ENDPOINT: $(COSMOS-ENDPOINT)
     COSMOS_KEY: $(COSMOS-KEY)

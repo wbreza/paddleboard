@@ -4,15 +4,12 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
 trigger:
-  branches:
-    include:
-      - master
-      - dev
   paths:
     include:
       - packages/api-userprofile
-
-pr: none
+pr:
+  - master
+  - dev
 
 variables:
   - group: BackendResources
@@ -32,33 +29,9 @@ steps:
     command: 'ci'
     workingDir: 'packages/api-userprofile'
 
-# - task: Npm@1
-#   displayName: 'Linting & Testing'
-#   inputs:
-#     command: 'custom'
-#     workingDir: 'packages/api-userprofile'
-#     customCommand: 'run test'
-
 - task: Npm@1
-  displayName: 'Package'
+  displayName: 'Linting & Testing'
   inputs:
     command: 'custom'
     workingDir: 'packages/api-userprofile'
-    customCommand: 'run package'
-  env:
-    COSMOS_ENDPOINT: $(COSMOS-ENDPOINT)
-    COSMOS_KEY: $(COSMOS-KEY)
-
-- task: CopyFiles@2
-  displayName: 'Prepare build artifact'
-  inputs:
-    SourceFolder: 'packages/api-userprofile/.serverless'
-    Contents: '**'
-    TargetFolder: '$(Build.ArtifactStagingDirectory)'
-
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish build artifact'
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'api-userprofile'
-    publishLocation: 'Container'
+    customCommand: 'run test'

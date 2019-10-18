@@ -4,12 +4,17 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
 trigger:
+  branches:
+    include:
+      - dev
   paths:
     include:
-      - packages/dashboard
-pr:
-  - master
-  - dev
+      - packages/api-userprofile
+
+pr: none
+
+variables:
+  - group: BackendResources
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -24,18 +29,27 @@ steps:
   displayName: 'Install dependencies'
   inputs:
     command: 'ci'
-    workingDir: 'packages/dashboard'
+    workingDir: 'packages/api-userprofile'
 
 - task: Npm@1
   displayName: 'Linting & Testing'
   inputs:
     command: 'custom'
-    workingDir: 'packages/dashboard'
+    workingDir: 'packages/api-userprofile'
     customCommand: 'run test'
 
 - task: Npm@1
-  displayName: 'Build'
+  displayName: 'Package'
   inputs:
     command: 'custom'
-    workingDir: 'packages/dashboard'
-    customCommand: 'run build'
+    workingDir: 'packages/api-userprofile'
+    customCommand: 'run package'
+  env:
+    COSMOS_ENDPOINT: $(COSMOS-ENDPOINT)
+    COSMOS_KEY: $(COSMOS-KEY)
+
+- task: PublishPipelineArtifact@1
+  displayName: 'Publish Build Artifact'
+  inputs:
+    targetPath: 'packages/api-userprofile/.serverless'
+    artifactName: 'api-userprofile'

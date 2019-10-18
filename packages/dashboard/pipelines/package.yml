@@ -4,12 +4,12 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
 trigger:
+  branches:
+    include:
+      - master
   paths:
     include:
       - packages/dashboard
-pr:
-  - master
-  - dev
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -39,3 +39,9 @@ steps:
     command: 'custom'
     workingDir: 'packages/dashboard'
     customCommand: 'run build'
+
+- task: PublishPipelineArtifact@1
+  displayName: 'Publish Build Artifact'
+  inputs:
+    targetPath: 'packages/dashboard/build'
+    artifactName: 'dashboard'

@@ -10,23 +10,21 @@ pool:
   vmImage: 'windows-latest'
 
 steps:
-- task: DownloadBuildArtifacts@0
+- task: DownloadPipelineArtifact@2
   displayName: 'Download Build Artifact'
   inputs:
     buildType: 'specific'
-    project: 'paddleboard'
-    pipeline: 'Build.Dashboard'
-    specificBuildWithTriggering: true
-    buildVersionToDownload: 'latestFromBranch'
-    branchName: 'refs/heads/master'
+    project: '$(System.TeamProjectId)'
+    definition: 10
+    pipeline: 10
     artifactName: 'dashboard'
-    downloadType: 'single'
-    downloadPath: '$(System.ArtifactsDirectory)'
+    targetPath: '$(Pipeline.Workspace)/artifact'
+    buildVersionToDownload: latest
 
 - task: AzureFileCopy@3
   displayName: 'Publish Build Artifact to Blob Storage'
   inputs:
-    SourcePath: '$(System.ArtifactsDirectory)/dashboard'
+    SourcePath: '$(Pipeline.Workspace)/artifact'
     azureSubscription: 'PELITTLE TEAM - CSE DWR(d36d0808-a967-4f73-9fdc-32ea232fc81d)'
     Destination: 'AzureBlob'
     storage: 'wabrezwusdevpdlbrd'
