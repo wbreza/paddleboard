@@ -35,7 +35,7 @@ steps:
   inputs:
     targetType: inline
     script: |
-      ls $(Pipeline.Workspace)/artifact
+      ls $(Pipeline.Workspace)/artifact/*.tgz
 
 # - task: Bash@3
 #   inputs:
