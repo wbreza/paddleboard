@@ -21,8 +21,10 @@ steps:
 - task: DownloadPipelineArtifact@2
   displayName: 'Download Build Artifact'
   inputs:
-    artifactName: 'core'
-    targetPath: 'artifact'
+    buildType: 'specific'
+    project: 'b0fbe943-30f5-48ce-9355-aea349350bd3'
+    pipelineId: '10'
+    buildVersionToDownload: latest
 
 - task: Bash@3
   inputs:
