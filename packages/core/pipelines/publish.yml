@@ -25,6 +25,9 @@ steps:
     specificBuildWithTriggering: true
     artifactName: core
     targetPath: 'artifact'
+    project: '$(System.TeamProjectId)'
+    pipeline: 10
+    definition: 10
 
 - task: Bash@3
   inputs:
