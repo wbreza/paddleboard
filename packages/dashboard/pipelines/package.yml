@@ -24,12 +24,15 @@ steps:
 
 - script: npm ci
   displayName: 'Install Dependencies'
+  workingDirectory: packages/dashboard
 
 - script: npm run test
   displayName: 'Linting & Testing'
+  workingDirectory: packages/dashboard
 
 - script: npm run build
   displayName: 'Build'
+  workingDirectory: packages/dashboard
 
 - task: PublishPipelineArtifact@1
   displayName: 'Publish Build Artifact'
