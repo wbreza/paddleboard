@@ -56,7 +56,7 @@ steps:
   inputs:
     targetType: filePath
     filePath: ./packages/core/scripts/version.sh
-    arguments: '@paddleboard/core'
+    arguments: '@paddleboard/core $(NPM_RELEASE_TYPE)'
     workingDirectory: packages/core
   env:
     SOURCE_BRANCH: $(Build.SourceBranch)
