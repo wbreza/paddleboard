@@ -86,7 +86,7 @@ steps:
 
 - task: CopyFiles@2
   displayName: 'Prepare Build Artifact'
-  contents: '**/*.tgz'
+  contents: packages/core/*.tgz
   targetFolder: 'artifact'
   cleanTargetFolder: true
 
