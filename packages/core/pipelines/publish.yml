@@ -22,8 +22,8 @@ steps:
   displayName: 'Download Build Artifact'
   inputs:
     buildType: 'specific'
-    project: 'b0fbe943-30f5-48ce-9355-aea349350bd3'
-    pipelineId: '10'
+    project: '$(System.TeamProjectId)'
+    pipeline: 10
     buildVersionToDownload: latest
 
 - task: Bash@3
