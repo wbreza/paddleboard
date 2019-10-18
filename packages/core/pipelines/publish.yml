@@ -42,6 +42,6 @@ steps:
   inputs:
     targetType: filePath
     filePath: ./packages/core/scripts/publish.sh
-    arguments: '$(NPM_PACKAGE_PATH) $(NPM_RELEASE_TYPE)'
+    arguments: '$(NPM_PACKAGE_PATH) $(NPM_TAG)'
   env:
     NPM_TOKEN: $(NPM-TOKEN)
