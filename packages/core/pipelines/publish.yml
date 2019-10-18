@@ -22,14 +22,18 @@ steps:
   displayName: 'Download Build Artifact'
   inputs:
     buildType: 'specific'
-    specificBuildWithTriggering: true
-    targetPath: 'artifact'
+    project: '$(System.TeamProjectId)'
+    definition: 10
+    pipeline: 10
+    artifactName: 'core'
+    targetPath: '$(Pipeline.Workspace)/artifact'
+    buildVersionToDownload: latest
 
 - task: Bash@3
   inputs:
     targetType: inline
     script: |
-      NPM_PACKAGE_PATH=`ls artifact/*.tgz`
+      NPM_PACKAGE_PATH=`ls $(Pipeline.Workspace)/artifact/*.tgz`
       echo ${NPM_PACKAGE_PATH}
       echo "##vso[task.setvariable variable=NPM_PACKAGE_PATH]${NPM_PACKAGE_PATH}"
 
