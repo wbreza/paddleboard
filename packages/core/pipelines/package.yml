@@ -86,9 +86,10 @@ steps:
 
 - task: CopyFiles@2
   displayName: 'Prepare Build Artifact'
-  contents: packages/core/*.tgz
-  targetFolder: 'artifact'
-  cleanTargetFolder: true
+  inputs:
+    contents: 'packages/core/*.tgz'
+    targetFolder: 'artifact'
+    cleanTargetFolder: true
 
 - task: PublishPipelineArtifact@1
   displayName: 'Publish Build Artifact'
