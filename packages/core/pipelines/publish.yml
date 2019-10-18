@@ -39,25 +39,10 @@ steps:
       echo "##vso[task.setvariable variable=NPM_PACKAGE_PATH]${NPM_PACKAGE_PATH}"
 
 - task: Bash@3
+  displayName: 'Publish NPM Package'
   inputs:
-    targetType: inline
-    script: |
-      echo "My favorite package is $(NPM_PACKAGE_PATH)"
-
-# - task: Bash@3
-#   inputs:
-#     targetType: inline
-#     script: |
-#       NPM_PACKAGE_PATH=`ls $(Pipeline.Workspace)/artifact/*.tgz`
-#       echo ${NPM_PACKAGE_PATH}
-#       echo "##vso[task.setvariable variable=NPM_PACKAGE_PATH]${NPM_PACKAGE_PATH}"
-
-# - task: Bash@3
-#   displayName: 'Publish NPM Package'
-#   inputs:
-#     targetType: filePath
-#     filePath: ./packages/core/scripts/publish.sh
-#     arguments: '$(NPM_PACKAGE_PATH)'
-#     workingDirectory: artifact
-#   env:
-#     NPM_TOKEN: $(NPM-TOKEN)
+    targetType: filePath
+    filePath: ./packages/core/scripts/publish.sh
+    arguments: '$(NPM_PACKAGE_PATH)'
+  env:
+    NPM_TOKEN: $(NPM-TOKEN)

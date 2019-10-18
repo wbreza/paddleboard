@@ -3,6 +3,8 @@ set -eo pipefail
 
 PACKAGE_NAME=$1
 
+echo "my favorite NPM package is ${PACKAGE_NAME}"
+
 # set up .npmrc to authenticate with the provided token
 echo "Seting up .npmrc ..."
 echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > .npmrc
