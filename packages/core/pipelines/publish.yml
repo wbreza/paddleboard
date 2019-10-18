@@ -22,7 +22,7 @@ steps:
   displayName: 'Download Build Artifact'
   inputs:
     buildType: 'specific'
-    project: 'paddleboard'
+    project: 'b0fbe943-30f5-48ce-9355-aea349350bd3'
     pipelineId: 10
     buildVersionToDownload: latest
 
