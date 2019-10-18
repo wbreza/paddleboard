@@ -15,8 +15,8 @@ steps:
   inputs:
     buildType: 'specific'
     project: '$(System.TeamProjectId)'
-    definition: 10
-    pipeline: 10
+    definition: 12
+    pipeline: 12
     artifactName: 'dashboard'
     targetPath: '$(Pipeline.Workspace)/artifact'
     buildVersionToDownload: latest
