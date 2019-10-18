@@ -19,18 +19,27 @@ steps:
     versionSpec: '10.x'
   displayName: 'Install Node.js'
 
-- task: DownloadBuildArtifacts@0
+- task: DownloadPipelineArtifact@2
   displayName: 'Download Build Artifact'
   inputs:
+    targetPath: 'artifact'
     buildType: 'specific'
-    project: 'paddleboard'
-    pipeline: 'Build.Core'
     specificBuildWithTriggering: true
-    buildVersionToDownload: 'latestFromBranch'
-    branchName: 'refs/heads/master'
     artifactName: 'core'
-    downloadType: 'single'
-    downloadPath: '$(System.ArtifactsDirectory)'
+    project: 'paddleboard'
+    pipelineId: 10
+    buildVersionToDownload: latestFromBranch
+    branchName: refs/heads/master
+
+- task: Bash@3
+  displayName: 'Publish NPM Package'
+  inputs:
+    targetType: filePath
+    filePath: ./packages/core/scripts/publish.sh
+    arguments: '@paddleboard/core'
+    workingDirectory: artifact
+  env:
+    NPM_TOKEN: $(NPM-TOKEN)
 
 - task: Npm@1
   displayName: 'Publish NPM Package'

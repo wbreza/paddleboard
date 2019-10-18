@@ -90,6 +90,7 @@ steps:
     contents: 'packages/core/*.tgz'
     targetFolder: 'artifact'
     cleanTargetFolder: true
+    flattenFolders: true
 
 - task: PublishPipelineArtifact@1
   displayName: 'Publish Build Artifact'
