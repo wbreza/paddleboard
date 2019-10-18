@@ -26,8 +26,9 @@
     "prebuild": "npm run clean && npm run test",
     "build": "npx tsc",
     "offline": "npm run build && sls offline",
-    "package": "cross-env NODE_ENV=production BABEL_ENV=production sls package",
-    "deploy": "cross-env NODE_ENV=production BABEL_ENV=production sls deploy"
+    "package": "cross-env NODE_ENV=production BABEL_ENV=production npx serverless package",
+    "webpack": "cross-env NODE_ENV=production BABEL_ENV=production npx serverless webpack",
+    "deploy": "cross-env NODE_ENV=production BABEL_ENV=production npx serverless deploy"
   },
   "dependencies": {
     "@multicloud/sls-azure": "^0.1.1",
