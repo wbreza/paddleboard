@@ -37,6 +37,19 @@ steps:
     command: 'custom'
     workingDir: 'packages/api-userprofile'
     customCommand: 'run test'
+  env:
+    COSMOS_ENDPOINT: $(COSMOS-ENDPOINT)
+    COSMOS_KEY: $(COSMOS-KEY)
+
+- task: Npm@1
+  displayName: 'Build'
+  inputs:
+    command: 'custom'
+    workingDir: 'packages/api-userprofile'
+    customCommand: 'run build'
+  env:
+    COSMOS_ENDPOINT: $(COSMOS-ENDPOINT)
+    COSMOS_KEY: $(COSMOS-KEY)
 
 - task: Npm@1
   displayName: 'Package'
@@ -44,9 +57,6 @@ steps:
     command: 'custom'
     workingDir: 'packages/api-userprofile'
     customCommand: 'run package'
-  env:
-    COSMOS_ENDPOINT: $(COSMOS-ENDPOINT)
-    COSMOS_KEY: $(COSMOS-KEY)
 
 - task: PublishPipelineArtifact@1
   displayName: 'Publish Build Artifact'
