@@ -21,14 +21,10 @@ steps:
 - task: DownloadPipelineArtifact@2
   displayName: 'Download Build Artifact'
   inputs:
-    buildType: 'specific'
+    buildType: 'current'
     specificBuildWithTriggering: true
     artifactName: core
     targetPath: 'artifact'
-    project: '$(System.TeamProjectId)'
-    definition: '$(System.DefinitionId)'
-    pipeline: 10
-    buildVersionToDownload: latest
 
 - task: Bash@3
   inputs:
