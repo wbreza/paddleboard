@@ -26,6 +26,7 @@ steps:
     artifactName: core
     targetPath: 'artifact'
     project: '$(System.TeamProjectId)'
+    definition: '$(System.DefinitionId)'
     pipeline: 10
     buildVersionToDownload: latest
 
