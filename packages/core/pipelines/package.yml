@@ -96,10 +96,3 @@ steps:
   inputs:
     targetPath: 'artifact'
     artifactName: 'core'
-
-- task: PublishPipelineArtifact@1
-  displayName: 'Publish Build Artifact'
-  inputs:
-    targetPath: 'packages/core/lib'
-    artifactName: 'lib'
-
