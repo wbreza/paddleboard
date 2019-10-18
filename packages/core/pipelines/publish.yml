@@ -27,7 +27,7 @@ steps:
     project: '$(System.TeamProjectId)'
     definition: 10
     pipeline: 10
-    artifactName: 'core'
+    artifactName: 'lib'
     itemPattern: '**'
     targetPath: '$(Pipeline.Workspace)/artifact'
     buildVersionToDownload: latest
