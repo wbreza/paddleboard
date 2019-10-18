@@ -25,10 +25,10 @@ steps:
 - script: npm ci
   displayName: 'Install Dependencies'
 
-- script: npm test
+- script: npm run test
   displayName: 'Linting & Testing'
 
-- script: npm build
+- script: npm run build
   displayName: 'Build'
 
 - task: PublishPipelineArtifact@1
