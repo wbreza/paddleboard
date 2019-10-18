@@ -21,7 +21,7 @@ steps:
 - task: DownloadPipelineArtifact@2
   displayName: 'Download Build Artifact'
   inputs:
-    buildType: 'current'
+    buildType: 'specific'
     specificBuildWithTriggering: true
     artifactName: core
     targetPath: 'artifact'
