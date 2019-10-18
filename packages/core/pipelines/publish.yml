@@ -22,12 +22,9 @@ steps:
   displayName: 'Download Build Artifact'
   inputs:
     buildType: 'specific'
-    specificBuildWithTriggering: true
-    artifactName: 'core'
     project: 'paddleboard'
     pipelineId: 10
-    buildVersionToDownload: latestFromBranch
-    branchName: refs/heads/master
+    buildVersionToDownload: latest
 
 - task: Bash@3
   inputs:
