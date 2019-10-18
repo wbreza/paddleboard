@@ -84,8 +84,14 @@ steps:
     workingDir: 'packages/core'
     customCommand: 'pack'
 
+- task: CopyFiles@2
+  displayName: 'Prepare Build Artifact'
+  contents: '*.tgz'
+  targetFolder: 'artifact'
+  cleanTargetFolder: true
+
 - task: PublishPipelineArtifact@1
   displayName: 'Publish Build Artifact'
   inputs:
-    targetPath: '*.tgz'
+    targetPath: 'artifact'
     artifactName: 'core'
