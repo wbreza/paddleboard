@@ -30,6 +30,7 @@ steps:
     buildVersionToDownload: latest
 
 - task: Bash@3
+  displayName: 'Prepare for NPM package publishing'
   inputs:
     targetType: inline
     script: |
@@ -41,6 +42,6 @@ steps:
   inputs:
     targetType: filePath
     filePath: ./packages/core/scripts/publish.sh
-    arguments: '$(NPM_PACKAGE_PATH)'
+    arguments: '$(NPM_PACKAGE_PATH) $(NPM_RELEASE_TYPE)'
   env:
     NPM_TOKEN: $(NPM-TOKEN)
