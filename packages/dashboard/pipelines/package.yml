@@ -22,25 +22,14 @@ steps:
     versionSpec: '10.x'
   displayName: 'Install Node.js'
 
-- task: Npm@1
-  displayName: 'Install dependencies'
-  inputs:
-    command: 'ci'
-    workingDir: 'packages/dashboard'
+- script: npm ci
+  displayName: 'Install Dependencies'
 
-- task: Npm@1
+- script: npm test
   displayName: 'Linting & Testing'
-  inputs:
-    command: 'custom'
-    workingDir: 'packages/dashboard'
-    customCommand: 'run test'
 
-- task: Npm@1
+- script: npm build
   displayName: 'Build'
-  inputs:
-    command: 'custom'
-    workingDir: 'packages/dashboard'
-    customCommand: 'run build'
 
 - task: PublishPipelineArtifact@1
   displayName: 'Publish Build Artifact'
