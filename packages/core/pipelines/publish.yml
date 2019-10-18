@@ -28,7 +28,6 @@ steps:
     definition: 10
     pipeline: 10
     artifactName: 'core'
-    itemPattern: '**'
     targetPath: '$(Pipeline.Workspace)/artifact'
     buildVersionToDownload: latest
 
