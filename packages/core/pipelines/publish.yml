@@ -28,7 +28,7 @@ steps:
     definition: 10
     pipeline: 10
     artifactName: 'core'
-    patterns: '**/*.tgz'
+    patterns: '**'
     targetPath: '$(Pipeline.Workspace)/artifact'
     buildVersionToDownload: latest
 
