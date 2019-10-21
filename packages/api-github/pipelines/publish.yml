@@ -30,8 +30,8 @@ steps:
   inputs:
     buildType: 'specific'
     project: '$(System.TeamProjectId)'
-    definition: 13
-    pipeline: 13
+    definition: 20
+    pipeline: 20
     artifactName: 'api-github'
     targetPath: '$(Pipeline.Workspace)/artifact'
     buildVersionToDownload: latest

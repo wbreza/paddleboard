@@ -30,8 +30,8 @@ steps:
   inputs:
     buildType: 'specific'
     project: '$(System.TeamProjectId)'
-    definition: 13
-    pipeline: 13
+    definition: 15
+    pipeline: 15
     artifactName: 'api-category'
     targetPath: '$(Pipeline.Workspace)/artifact'
     buildVersionToDownload: latest
