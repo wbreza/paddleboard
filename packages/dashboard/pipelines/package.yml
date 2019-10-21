@@ -13,6 +13,9 @@ trigger:
 
 pr: none
 
+variables:
+  CI: true
+
 pool:
   vmImage: 'ubuntu-latest'
 
@@ -26,7 +29,7 @@ steps:
   displayName: 'Install Dependencies'
   workingDirectory: packages/dashboard
 
-- script: npm run test
+- script: npm run test:coverage
   displayName: 'Linting & Testing'
   workingDirectory: packages/dashboard
 
