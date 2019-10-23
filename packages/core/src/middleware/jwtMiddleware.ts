@@ -1,11 +1,12 @@
 import { PaddleboardCloudContext } from "../models/paddleboardCloudContext";
 import jsonwebtoken from "jsonwebtoken";
+import { Middleware } from "@multicloud/sls-core";
 
 export interface JwtMiddlewareOptions {
   required: boolean;
 }
 
-export const JwtMiddleware = (options?: JwtMiddlewareOptions) => async (context: PaddleboardCloudContext, next: () => Promise<void>) => {
+export const JwtMiddleware = (options?: JwtMiddlewareOptions): Middleware => async (context: PaddleboardCloudContext, next: () => Promise<void>) => {
   options = options || {
     required: false
   };

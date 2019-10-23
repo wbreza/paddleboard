@@ -1,10 +1,11 @@
 import { CategoryService } from "../services/categoryService";
 import { UserProfileValidationMiddleware } from "./userProfileValidationMiddleware";
 import { PaddleboardCloudContext } from "../models/paddleboardCloudContext";
+import { Middleware } from "@multicloud/sls-core";
 
 const userProfileValidation = UserProfileValidationMiddleware();
 
-export const CategoryValidationMiddleware = () => async (context: PaddleboardCloudContext, next: () => Promise<void>) => {
+export const CategoryValidationMiddleware = (): Middleware => async (context: PaddleboardCloudContext, next: () => Promise<void>) => {
   await userProfileValidation(context, () => Promise.resolve());
 
   if (!context.req.pathParams.has("categoryId")) {

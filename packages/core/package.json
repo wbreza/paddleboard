@@ -30,7 +30,7 @@
   "dependencies": {
     "@azure/cosmos": "^3.3.0",
     "@azure/storage-queue": "^10.3.0",
-    "@multicloud/sls-core": "^0.1.1",
+    "@multicloud/sls-core": "^0.1.1-23",
     "axios": "^0.19.0",
     "dotenv": "^8.1.0",
     "jsonwebtoken": "^8.5.1",

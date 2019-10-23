@@ -1,7 +1,8 @@
 import { UserProfileService } from "../services/userProfileService";
 import { PaddleboardCloudContext } from "../models/paddleboardCloudContext";
+import { Middleware } from "@multicloud/sls-core";
 
-export const UserProfileValidationMiddleware = () => async (context: PaddleboardCloudContext, next: () => Promise<void>) => {
+export const UserProfileValidationMiddleware = (): Middleware => async (context: PaddleboardCloudContext, next: () => Promise<void>) => {
   // If the user has already been set then short curcuit
   if (context.user) {
     return await next();

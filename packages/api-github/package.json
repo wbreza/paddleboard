@@ -31,8 +31,8 @@
     "deploy": "cross-env NODE_ENV=production BABEL_ENV=production npx serverless deploy"
   },
   "dependencies": {
-    "@multicloud/sls-azure": "^0.1.1",
-    "@multicloud/sls-core": "^0.1.1",
+    "@multicloud/sls-azure": "^0.1.1-13",
+    "@multicloud/sls-core": "^0.1.1-23",
     "@paddleboard/core": "^1.0.1"
   },
   "devDependencies": {
