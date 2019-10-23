@@ -1,22 +1,20 @@
 import { app } from "../app";
-import { config } from "../config"
 import { PaddleboardCloudContext, UserProfileService, UserProfileValidationMiddleware, AccountService, UserProfile } from "@paddleboard/core";
 
-const middlewares = config();
 const userValidation = UserProfileValidationMiddleware();
 
-export const getUserProfileList = app.use(middlewares, async (context: PaddleboardCloudContext) => {
+export const getUserProfileList = app.use(async () => {
   const userService = new UserProfileService();
   const users = await userService.list();
 
-  context.send({ value: users }, 200);
+  return { value: users };
 });
 
-export const getUserProfile = app.use([...middlewares, userValidation], (context: PaddleboardCloudContext) => {
-  context.send({ value: context.user }, 200);
+export const getUserProfile = app.use([userValidation], (context: PaddleboardCloudContext) => {
+  return { value: context.user };
 });
 
-export const postUserProfile = app.use(middlewares, async (context: PaddleboardCloudContext) => {
+export const postUserProfile = app.use(async (context: PaddleboardCloudContext) => {
   if (!context.req.body) {
     return context.send({ message: "user profile is required" }, 400);
   }
@@ -25,11 +23,16 @@ export const postUserProfile = app.use(middlewares, async (context: PaddleboardC
   const user = await userService.save(context.req.body);
   const newUri = `users/${user.id}`;
 
-  context.res.headers.set("location", newUri);
-  context.send({ value: user }, 201);
+  return {
+    body: { value: user },
+    status: 201,
+    headers: {
+      "location": newUri
+    }
+  };
 });
 
-export const putUserProfile = app.use([...middlewares, userValidation], async (context: PaddleboardCloudContext) => {
+export const putUserProfile = app.use([userValidation], async (context: PaddleboardCloudContext) => {
   const userToSave = {
     ...context.req.body,
     id: context.user.id
@@ -38,10 +41,13 @@ export const putUserProfile = app.use([...middlewares, userValidation], async (c
   const userService = new UserProfileService();
   await userService.save(userToSave);
 
-  context.send(null, 204);
+  return {
+    body: null,
+    status: 204
+  };
 });
 
-export const patchUserProfile = app.use([...middlewares, userValidation], async (context: PaddleboardCloudContext) => {
+export const patchUserProfile = app.use([userValidation], async (context: PaddleboardCloudContext) => {
   const userToSave = {
     ...context.user,
     ...context.req.body,
@@ -51,17 +57,23 @@ export const patchUserProfile = app.use([...middlewares, userValidation], async 
   const userService = new UserProfileService();
   await userService.save(userToSave);
 
-  context.send([], 204);
+  return {
+    body: null,
+    status: 204
+  };
 });
 
-export const deleteUserProfile = app.use([...middlewares, userValidation], async (context: PaddleboardCloudContext) => {
+export const deleteUserProfile = app.use([userValidation], async (context: PaddleboardCloudContext) => {
   const userService = new UserProfileService();
   await userService.delete(context.user.id);
 
-  context.send(null, 204);
+  return {
+    body: null,
+    status: 204
+  };
 });
 
-export const getCurrentUserProfile = app.use(middlewares, async (context: PaddleboardCloudContext) => {
+export const getCurrentUserProfile = app.use(async (context: PaddleboardCloudContext) => {
   if (!context.user) {
     return context.send({ message: "User not found" }, 404);
   }
@@ -73,10 +85,12 @@ export const getCurrentUserProfile = app.use(middlewares, async (context: Paddle
     accounts: await accountService.getByUser(context.user.id)
   };
 
-  context.send({ value: user }, 200);
+  return {
+    value: user
+  };
 });
 
-export const postCurrentUserProfile = app.use(middlewares, async (context: PaddleboardCloudContext) => {
+export const postCurrentUserProfile = app.use(async (context: PaddleboardCloudContext) => {
   const userService = new UserProfileService();
   const accountService = new AccountService();
 
@@ -109,6 +123,10 @@ export const postCurrentUserProfile = app.use(middlewares, async (context: Paddl
     user.accounts.push(account);
   }
 
-  context.res.headers.set("location", "https://paddleboard.breza.io/api/user");
-  context.send({ value: user }, 200);
+  return {
+    body: { value: user },
+    headers: {
+      "location": "https://paddleboard.breza.io/api/user"
+    }
+  };
 });

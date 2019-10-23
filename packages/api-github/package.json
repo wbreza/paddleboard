@@ -25,7 +25,11 @@
     "test:coverage": "npm run test -- --coverage",
     "prebuild": "npm run clean && npm run test",
     "build": "npx tsc",
-    "offline": "npm run build && sls offline",
+    "preoffline": "npm run build",
+    "offline": "sls offline",
+    "sync": "npm run sync:paddleboard && npm run sync:multicloud",
+    "sync:multicloud": "npm install @multicloud/sls-core@beta @multicloud/sls-azure@beta",
+    "sync:paddleboard": "npm install @paddleboard/core@beta",
     "package": "cross-env NODE_ENV=production BABEL_ENV=production npx serverless package",
     "webpack": "cross-env NODE_ENV=production BABEL_ENV=production npx serverless webpack",
     "deploy": "cross-env NODE_ENV=production BABEL_ENV=production npx serverless deploy"
@@ -33,7 +37,7 @@
   "dependencies": {
     "@multicloud/sls-azure": "^0.1.1-13",
     "@multicloud/sls-core": "^0.1.1-23",
-    "@paddleboard/core": "^1.0.1"
+    "@paddleboard/core": "^1.0.2-1"
   },
   "devDependencies": {
     "@babel/core": "^7.6.2",

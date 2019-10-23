@@ -6,11 +6,12 @@ import {
   ExceptionMiddleware,
   ConsoleLogger,
   LogLevel,
+  Middleware,
 } from "@multicloud/sls-core";
 
 const defaultLogger = new ConsoleLogger(LogLevel.VERBOSE);
 
-export const config = () => {
+export const config = (): Middleware[] => {
   return [
     LoggingServiceMiddleware(defaultLogger),
     PerformanceMiddleware(),

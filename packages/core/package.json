@@ -22,7 +22,10 @@
     "test:ci": "npm run test -- --ci",
     "test:coverage": "npm run test -- --coverage",
     "prebuild": "npm run test",
-    "build": "npx tsc"
+    "build": "npx tsc",
+    "offline": "sls offline",
+    "sync": "npm run sync:multicloud",
+    "sync:multicloud": "npm install @multicloud/sls-core@beta @multicloud/sls-azure@beta"
   },
   "files": [
     "lib/"
@@ -30,6 +33,7 @@
   "dependencies": {
     "@azure/cosmos": "^3.3.0",
     "@azure/storage-queue": "^10.3.0",
+    "@multicloud/sls-azure": "^0.1.1-13",
     "@multicloud/sls-core": "^0.1.1-23",
     "axios": "^0.19.0",
     "dotenv": "^8.1.0",
