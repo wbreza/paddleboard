@@ -3,6 +3,8 @@ import { CosmosClient, Database, Container, CosmosClientOptions, SqlQuerySpec, C
 import shortid from "shortid";
 import { Entity } from "../models/app";
 
+shortid.characters("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
+
 export interface DataService<T extends Entity> {
   get: (id: string, partitionKey?: string) => Promise<T>;
   list: (options?: DataListOptions) => Promise<T[]>;
@@ -28,7 +30,7 @@ export interface SimpleMap {
   [key: string]: any;
 }
 
-export abstract class DataServiceBase<T extends Entity> implements DataService<T> {
+export class DataServiceBase<T extends Entity> implements DataService<T> {
   private database: Database;
   private collection: Container;
   protected readonly client: CosmosClient;

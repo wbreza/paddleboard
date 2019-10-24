@@ -1,0 +1,56 @@
+@startuml
+
+class UserProfile {
+  +firstName
+  +lastName
+  +email
+  +getCategories()
+  +getRepositories()
+  +getPullRequests()
+}
+
+class Account {
+  +userId
+  +providerType
+  +providerId
+  +metadata
+  +getRepositories()
+}
+
+class Category {
+  +userId
+  +name
+  +descriptions
+  +getRepositories()
+  +getPullRequests()
+}
+
+note left of Category: Categories are unqiue \nto each user account
+
+class Repository {
+  +name
+  +description
+  +portalUrl
+}
+
+note left of Repository: The same repository \ncan be used referenced \nby multiple users
+note right of Repository: The same repository \n can be referenced \n by multiple categories
+
+class PullRequest {
+  +repositoryId
+  +title
+  +description
+  +state
+}
+
+note left of PullRequest : The same PR can\n be seen by \nmultiple users
+
+UserProfile --> Account : has
+Account ..> Repository : refs
+
+UserProfile --> Category : has
+Category ..> Repository: refs
+
+Repository --> PullRequest : contains
+
+@enduml

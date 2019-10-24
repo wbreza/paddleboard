@@ -9,28 +9,23 @@ export interface AuditInfo {
 }
 
 export interface Category extends Entity {
-  userId: string;
   name: string;
   description?: string;
 }
 
 export interface Repository extends Entity {
-  categoryId?: string;
-  accountId: string;
-  userId: string;
   name: string;
   portalUrl: string;
   description?: string;
+  categoryId?: string;
 }
 
 export interface PullRequest extends Entity {
   repositoryId: string;
-  categoryId?: string;
-  accountId: string;
-  userId: string;
   name: string;
   description?: string;
   portalUrl: string;
+  state: PullRequestState;
 }
 
 export interface UserProfile extends Entity {
@@ -38,13 +33,23 @@ export interface UserProfile extends Entity {
   firstName: string;
   lastName: string;
   accounts?: Account[];
+  categories?: Category[];
+  repositories?: Repository[];
+  recentPullRequests?: PullRequest[];
 }
 
 export interface Account extends Entity {
-  userId: string;
   providerType: string;
   providerId: string;
   metadata: any;
+}
+
+export enum PullRequestState {
+  New = "new",
+  Read = "read",
+  Approved = "approved",
+  RequestChanges = "request-changes",
+  Closed = "closed"
 }
 
 export enum ProviderType {

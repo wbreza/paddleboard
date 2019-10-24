@@ -1,0 +1,56 @@
+@startuml
+
+actor "User" as user
+actor "Admin" as admin
+database "Users" as userdb
+database "Repos" as repos
+database "PRs" as prs
+collections "Repo\nQueue" as rq
+collections "PR\nQueue" as prq
+boundary "PB API" as pbapi
+boundary "GitHub API" as ghapi
+
+group New App Installation by Admin
+
+  autonumber
+  admin -> pbapi : Install GitHub App
+  pbapi -> ghapi : Get selected repos
+  pbapi --> rq : Queue selected repos
+
+  rq -> pbapi : Process new repo message
+  pbapi -> ghapi : Get active pull requests from repo
+  pbapi --> prq : Queue Active PRs
+  pbapi --> repos : Upsert repo in collection
+
+  prq -> pbapi : Process new PR message
+  pbapi --> prs : Upsert PR in collection
+
+end
+
+group New Pull Request Created
+  autonumber
+  ghapi -> pbapi : Process PR webhook
+  pbapi -> prq : Queue new PR task
+  prq -> pbapi : Process new PR message
+  pbapi --> prs : Upsert PR in collection
+end
+
+group User changes PR status (read, approved, rejected)
+  autonumber
+  user -> pbapi : Mark PR with new status
+  pbapi -> prs : Upsert PR in collection
+end
+
+group User access dashboard
+  autonumber
+  user -> Dashboard : User access dashboard
+  Dashboard -> pbapi : Get categories
+  pbapi --> userdb : Query categories for user
+  Dashboard -> pbapi : Get PRs in category
+  pbapi --> repos : Get repos by category
+  pbapi --> prs : Get active PRs by list of repo ids
+  pbapi --> userdb : Get active PRs by user id
+  pbapi -> Dashboard : Merge PR list
+end
+
+@enduml
