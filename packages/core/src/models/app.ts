@@ -16,6 +16,7 @@ export interface Category extends Entity {
 export interface Repository extends Entity {
   name: string;
   portalUrl: string;
+  providerType: DeveloperAccountType;
   description?: string;
   categoryId?: string;
 }
@@ -28,31 +29,48 @@ export interface PullRequest extends Entity {
   state: PullRequestState;
 }
 
+export interface CodeReview extends Entity {
+  userId: string;
+  pullRequestId: string;
+  state: CodeReviewState;
+}
+
 export interface UserProfile extends Entity {
   email: string;
   firstName: string;
   lastName: string;
-  accounts?: Account[];
+  identity: Identity;
+  accounts?: DeveloperAccount[];
   categories?: Category[];
   repositories?: Repository[];
-  recentPullRequests?: PullRequest[];
 }
 
-export interface Account extends Entity {
-  providerType: string;
+export interface Identity {
+  type: string;
+  externalId: string;
+  metadata?: any;
+}
+
+export interface DeveloperAccount extends Entity {
+  providerType: DeveloperAccountType;
   providerId: string;
-  metadata: any;
+  metadata?: any;
+}
+
+export enum CodeReviewState {
+  Pending = "pending",
+  Approved = "approved",
+  Rejected = "rejected",
+  Waiting = "waiting"
 }
 
 export enum PullRequestState {
-  New = "new",
-  Read = "read",
-  Approved = "approved",
-  RequestChanges = "request-changes",
+  Active = "active",
+  Merged = "merged",
   Closed = "closed"
 }
 
-export enum ProviderType {
+export enum DeveloperAccountType {
   GitHub = "github",
   Azure = "azdo",
   GitLab = "gitlab",

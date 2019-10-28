@@ -1,7 +1,7 @@
-import { Account, UserProfile } from "../models/app";
+import { DeveloperAccount, UserProfile } from "../models/app";
 import { ChildDataService } from "./childDataService";
 
-export class AccountService extends ChildDataService<UserProfile, Account> {
+export class AccountService extends ChildDataService<UserProfile, DeveloperAccount> {
   public constructor() {
     super({
       collectionName: "UserProfile",
@@ -11,11 +11,12 @@ export class AccountService extends ChildDataService<UserProfile, Account> {
     }, "accounts");
   }
 
-  public async getByUser(userId: string): Promise<Account[]> {
+  public async getByUser(userId: string): Promise<DeveloperAccount[]> {
     return await this.list(userId);
   }
 
-  public async getByProvider(providerId: string, providerType: string): Promise<Account> {
-    return await this.findSingle({ providerId, providerType });
+  public async getByEmail(email: string): Promise<DeveloperAccount[]> {
+    const user = await this.parentService.findSingle({ email });
+    return user ? user.accounts : [];
   }
 }

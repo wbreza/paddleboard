@@ -2,8 +2,6 @@ import { DataServiceOptions, DataServiceBase } from "./dataService";
 import { Entity } from "../models/app";
 import shortid from "shortid";
 
-shortid.characters("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
-
 export class ChildDataService<P extends Entity, C extends Entity> {
   protected readonly parentService: DataServiceBase<P>;
 

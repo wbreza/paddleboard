@@ -4,17 +4,79 @@ class UserProfile {
   +firstName
   +lastName
   +email
+  +identity
   +getCategories()
   +getRepositories()
   +getPullRequests()
 }
 
-class Account {
+UserProfile -left-> Identity: identity
+UserProfile --> DeveloperAccount : accounts
+UserProfile --> Category : categories
+UserProfile --> CodeReview : reviews
+
+class CodeReview {
+  +userId
+  +pullRequestId
+  +state
+  +viewState
+  +approveState
+}
+
+CodeReview -right-> CodeReviewState : state
+note bottom of CodeReview : The developer review \nof a pull request
+
+enum PullRequestState {
+  New
+  Read
+  Approved
+  Waiting
+  Closed
+}
+
+enum PullRequestState {
+  Active
+  Merged
+  Closed
+}
+
+enum CodeReviewState {
+  Pending
+  Approved
+  Rejected
+  Waiting
+}
+
+class DeveloperAccount {
   +userId
   +providerType
   +providerId
   +metadata
   +getRepositories()
+}
+
+DeveloperAccount -left-> DeveloperAccountType : type
+
+class Identity {
+  +type
+  +id
+  +metadata
+}
+Identity --> IdentityType : type
+note left of Identity : The UserProfile has \na single identity provider
+
+enum IdentityType {
+  Microsoft
+  Google
+  Facebook
+  GitHub
+}
+
+enum DeveloperAccountType {
+  AzureDevOps
+  GitHub
+  GitLab
+  BitBucket
 }
 
 class Category {
@@ -25,7 +87,9 @@ class Category {
   +getPullRequests()
 }
 
-note left of Category: Categories are unqiue \nto each user account
+Category ..> Repository: repositories
+
+note right of Category: Categories are unqiue \nto each user DeveloperAccount
 
 class Repository {
   +name
@@ -33,6 +97,8 @@ class Repository {
   +portalUrl
 }
 
+Repository --> PullRequest : contains
+Repository --> DeveloperAccountType : type
 note left of Repository: The same repository \ncan be used referenced \nby multiple users
 note right of Repository: The same repository \n can be referenced \n by multiple categories
 
@@ -43,14 +109,8 @@ class PullRequest {
   +state
 }
 
+PullRequest --> CodeReview : reviews
+PullRequest --> PullRequestState: state
 note left of PullRequest : The same PR can\n be seen by \nmultiple users
-
-UserProfile --> Account : has
-Account ..> Repository : refs
-
-UserProfile --> Category : has
-Category ..> Repository: refs
-
-Repository --> PullRequest : contains
 
 @enduml

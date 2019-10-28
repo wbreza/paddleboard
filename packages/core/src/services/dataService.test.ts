@@ -1,82 +1,106 @@
-import { RepositoryService } from "./repositoryService";
 import { UserProfileService } from "./userProfileService";
+import { RepositoryService } from "./repositoryService";
+import { AccountService } from "./accountService";
 import { CategoryService } from "./categoryService";
 import { PullRequestService } from "./pullRequestService";
-import { AccountService } from "./accountService";
-import { UserProfile, Repository, Category, PullRequest, Account, ProviderType } from "../models/app";
+import { CodeReviewService } from "./codeReviewService";
+import { UserProfile, Category, Repository, DeveloperAccount, DeveloperAccountType, CodeReview, PullRequest, PullRequestState, CodeReviewState } from "../models/app";
+import { UserRepositoryService } from "./userRepositoryService";
 
 describe("Repository Data Service", (): void => {
-  xit("CRUD operations", async (): Promise<void> => {
-    const userProfileService = new UserProfileService();
-    const repoService = new RepositoryService();
-    const categoryService = new CategoryService();
-    const pullRequestService = new PullRequestService();
-    const accountService = new AccountService();
+  let
+    userProfileService: UserProfileService,
+    accountService: AccountService,
+    categoryService: CategoryService,
+    pullRequestService: PullRequestService,
+    codeReviewService: CodeReviewService,
+    repositoryService: RepositoryService,
+    userRepositoryService: UserRepositoryService;
+
+  beforeAll(async () => {
+    userProfileService = new UserProfileService();
+    accountService = new AccountService();
+    categoryService = new CategoryService();
+    pullRequestService = new PullRequestService();
+    codeReviewService = new CodeReviewService();
+    repositoryService = new RepositoryService();
+    userRepositoryService = new UserRepositoryService();
 
     await Promise.all([
       userProfileService.init(),
-      accountService.init(),
-      categoryService.init(),
-      repoService.init(),
+      repositoryService.init(),
       pullRequestService.init(),
+      codeReviewService.init()
     ]);
+  });
 
-    let user: UserProfile = {
-      email: "wallace@breza.me",
-      firstName: "Wallace",
-      lastName: "Breza"
-    };
+  function randomString() {
+    return Math.random().toString(36).substring(7);
+  }
 
-    user = await userProfileService.getByEmail("wallace@breza.me") || await userProfileService.save(user);
+  it("Creates the domain graph", async () => {
+    const random = randomString();
 
-    let githubAccount: Account = {
-      userId: user.id,
-      providerId: "wbreza",
-      providerType: ProviderType.GitHub,
-      metadata: {
-        login: "wbreza",
-        id: 6540159,
-        type: "user",
-        name: "Wallace Breza"
+    let userProfile: UserProfile = {
+      firstName: `First ${random}`,
+      lastName: `Last ${random}`,
+      email: `${random}@contoso.com`,
+      identity: {
+        externalId: random,
+        type: "test"
       }
     }
 
-    githubAccount = await accountService.getByProvider(githubAccount.providerId, githubAccount.providerType) || await accountService.save(githubAccount);
+    userProfile = await userProfileService.save(userProfile);
 
     let category: Category = {
       name: "Personal",
-      description: "Holds all my personal repos",
-      userId: user.id
+      description: "Description of my category",
     };
 
-    category = await categoryService.findSingle({ name: category.name }) || await categoryService.save(category);
+    category = await categoryService.save(category, userProfile.id);
+
+    let account: DeveloperAccount = {
+      providerId: random,
+      providerType: DeveloperAccountType.GitHub
+    };
+
+    account = await accountService.save(account, userProfile.id);
 
     let repo: Repository = {
-      categoryId: category.id,
-      accountId: githubAccount.id,
-      userId: user.id,
       name: "Paddleboard",
+      providerType: account.providerType,
       portalUrl: "https://github.com/wbreza/paddleboard"
     };
 
-    repo = await repoService.findSingle({ name: repo.name }) || await repoService.save(repo);
-    repo = await repoService.get(repo.id, user.id);
+    repo = await repositoryService.save(repo);
+    await userRepositoryService.save({ ...repo, categoryId: category.id }, userProfile.id);
 
     let pullRequest: PullRequest = {
-      categoryId: category.id,
+      name: "fix: Fixed the bug!",
+      description: "Fixed the bug by using my brain",
       repositoryId: repo.id,
-      userId: user.id,
-      accountId: githubAccount.id,
-      name: "Create the data services",
-      description: "Creates the data services for paddleboard",
-      portalUrl: "https://github.com/wbreza/paddleboard/pulls/2"
+      state: PullRequestState.Active,
+      portalUrl: `https://github.com/wbreza/paddleboard/pulls/${random}`
     };
 
-    pullRequest = await pullRequestService.findSingle({ repositoryId: repo.id }) || await pullRequestService.save(pullRequest);
+    pullRequest = await pullRequestService.save(pullRequest);
 
-    expect(user).not.toBeNull();
-    expect(category).not.toBeNull();
-    expect(repo).not.toBeNull();
-    expect(pullRequest).not.toBeNull();
+    let codeReview: CodeReview = {
+      pullRequestId: pullRequest.id,
+      userId: userProfile.id,
+      state: CodeReviewState.Pending
+    };
+
+    codeReview = await codeReviewService.save(codeReview);
+
+    const categoryRepos = await userRepositoryService.getByCategory(userProfile.id, category.id);
+    expect(categoryRepos).toHaveLength(1);
+
+    // Clean up
+    codeReviewService.delete(codeReview.id, repo.id);
+    pullRequestService.delete(pullRequest.id, repo.id);
+    repositoryService.delete(repo.id);
+    userProfileService.delete(userProfile.id);
   });
 });
