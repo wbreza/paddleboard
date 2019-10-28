@@ -1,22 +1,27 @@
-import { DataServiceBase, DataListOptions } from "./dataService";
-import { Category } from "../models/app";
+import { Category, UserProfile } from "../models/app";
+import { ChildDataService } from "./childDataService";
+import Guard from "../guard";
 
-export class CategoryService extends DataServiceBase<Category> {
+/**
+ * Manages categories for user accounts
+ */
+export class CategoryService extends ChildDataService<UserProfile, Category> {
   public constructor() {
     super({
-      collectionName: "Category",
+      collectionName: "UserProfile",
       databaseName: "Paddleboard",
       endpoint: process.env.COSMOS_ENDPOINT,
-      key: process.env.COSMOS_KEY,
-      collectionOptions: {
-        partitionKey: {
-          paths: ["/userId"]
-        }
-      }
-    });
+      key: process.env.COSMOS_KEY
+    }, "categories");
   }
 
-  public async getByUser(userId: string, options?: DataListOptions): Promise<Category[]> {
-    return await this.find({ userId }, options);
+  /**
+   * Get a list of categories for the specified user
+   * @param userId userId to filter
+   */
+  public async getByUser(userId: string): Promise<Category[]> {
+    Guard.empty(userId, "userId");
+
+    return await this.list(userId);
   }
 }

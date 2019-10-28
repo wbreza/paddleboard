@@ -28,7 +28,7 @@ export interface SimpleMap {
   [key: string]: any;
 }
 
-export abstract class DataServiceBase<T extends Entity> implements DataService<T> {
+export class DataServiceBase<T extends Entity> implements DataService<T> {
   private database: Database;
   private collection: Container;
   protected readonly client: CosmosClient;

@@ -10,8 +10,8 @@ export class QueueService {
   private messageUrl: MessagesURL;
 
   public constructor(private options: QueueServiceOptions) {
-    const credientials = new SharedKeyCredential(this.options.account, this.options.key);
-    const pipeline = StorageURL.newPipeline(credientials);
+    const credentials = new SharedKeyCredential(this.options.account, this.options.key);
+    const pipeline = StorageURL.newPipeline(credentials);
     const url = `https://${this.options.account}.queue.core.windows.net`
     const serviceUrl = new ServiceURL(url, pipeline);
 
