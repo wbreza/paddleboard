@@ -1,7 +1,10 @@
 import { DeveloperAccount, UserProfile } from "../models/app";
 import { ChildDataService } from "./childDataService";
 
-export class AccountService extends ChildDataService<UserProfile, DeveloperAccount> {
+/**
+ * Manages developer accounts of Paddleboard
+ */
+export class DeveloperAccountService extends ChildDataService<UserProfile, DeveloperAccount> {
   public constructor() {
     super({
       collectionName: "UserProfile",
@@ -11,10 +14,18 @@ export class AccountService extends ChildDataService<UserProfile, DeveloperAccou
     }, "accounts");
   }
 
+  /**
+   * Gets a list of developer accounts for the specified user
+   * @param userId The userId to filter results by
+   */
   public async getByUser(userId: string): Promise<DeveloperAccount[]> {
     return await this.list(userId);
   }
 
+  /**
+   * Gets a list of developer accounts for the specified email address
+   * @param email The email address to filter results by
+   */
   public async getByEmail(email: string): Promise<DeveloperAccount[]> {
     const user = await this.parentService.findSingle({ email });
     return user ? user.accounts : [];

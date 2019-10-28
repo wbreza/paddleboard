@@ -1,6 +1,9 @@
 import { DataServiceBase } from "./dataService";
 import { Repository } from "../models/app";
 
+/**
+ * Manages global repositories within paddleboard
+ */
 export class RepositoryService extends DataServiceBase<Repository> {
   public constructor() {
     super({

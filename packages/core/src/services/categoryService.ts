@@ -1,6 +1,10 @@
 import { Category, UserProfile } from "../models/app";
 import { ChildDataService } from "./childDataService";
+import Guard from "../guard";
 
+/**
+ * Manages categories for user accounts
+ */
 export class CategoryService extends ChildDataService<UserProfile, Category> {
   public constructor() {
     super({
@@ -11,7 +15,13 @@ export class CategoryService extends ChildDataService<UserProfile, Category> {
     }, "categories");
   }
 
+  /**
+   * Get a list of categories for the specified user
+   * @param userId userId to filter
+   */
   public async getByUser(userId: string): Promise<Category[]> {
+    Guard.empty(userId, "userId");
+
     return await this.list(userId);
   }
 }

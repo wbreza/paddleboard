@@ -6,7 +6,7 @@ export * from "./services/github";
 export * from "./services/queueService";
 // Data Services
 export * from "./services/userProfileService";
-export * from "./services/accountService";
+export * from "./services/developerAccountService";
 export * from "./services/categoryService";
 export * from "./services/repositoryService";
 export * from "./services/pullRequestService";

@@ -1,5 +1,4 @@
 import axios from "axios";
-import fs from "fs";
 import MockAdapter from "axios-mock-adapter";
 import { GitHubService, GitHubServiceOptions } from "./github";
 
@@ -8,10 +7,6 @@ describe("Github Service", () => {
   const mock = new MockAdapter(axios);
 
   beforeAll(() => {
-    if(!process.env.GITHUB_SIGNING_KEY){
-      process.env.GITHUB_SIGNING_KEY = fs.readFileSync(`${process.cwd()}\\github.pem`).toString("utf8");
-    }
-
     const options: GitHubServiceOptions = {
       appId: process.env.GITHUB_APP_ID,
       clientId: process.env.GITHUB_CLIENT_ID,

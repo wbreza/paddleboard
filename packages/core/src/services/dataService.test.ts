@@ -1,16 +1,18 @@
 import { UserProfileService } from "./userProfileService";
 import { RepositoryService } from "./repositoryService";
-import { AccountService } from "./accountService";
+import { DeveloperAccountService } from "./developerAccountService";
 import { CategoryService } from "./categoryService";
 import { PullRequestService } from "./pullRequestService";
 import { CodeReviewService } from "./codeReviewService";
 import { UserProfile, Category, Repository, DeveloperAccount, DeveloperAccountType, CodeReview, PullRequest, PullRequestState, CodeReviewState } from "../models/app";
 import { UserRepositoryService } from "./userRepositoryService";
 
+jest.setTimeout(10000);
+
 describe("Repository Data Service", (): void => {
   let
     userProfileService: UserProfileService,
-    accountService: AccountService,
+    accountService: DeveloperAccountService,
     categoryService: CategoryService,
     pullRequestService: PullRequestService,
     codeReviewService: CodeReviewService,
@@ -19,7 +21,7 @@ describe("Repository Data Service", (): void => {
 
   beforeAll(async () => {
     userProfileService = new UserProfileService();
-    accountService = new AccountService();
+    accountService = new DeveloperAccountService();
     categoryService = new CategoryService();
     pullRequestService = new PullRequestService();
     codeReviewService = new CodeReviewService();
@@ -38,7 +40,7 @@ describe("Repository Data Service", (): void => {
     return Math.random().toString(36).substring(7);
   }
 
-  it("Creates the domain graph", async () => {
+  it("Creates and validates the domain graph", async () => {
     const random = randomString();
 
     let userProfile: UserProfile = {
@@ -94,8 +96,29 @@ describe("Repository Data Service", (): void => {
 
     codeReview = await codeReviewService.save(codeReview);
 
+    const accounts = await accountService.getByUser(userProfile.id);
+    expect(accounts).toHaveLength(1);
+
+    const accountsByEmail = await accountService.getByEmail(userProfile.email);
+    expect(accountsByEmail).toHaveLength(1);
+
+    const categories = await categoryService.getByUser(userProfile.id);
+    expect(categories).toHaveLength(1);
+
     const categoryRepos = await userRepositoryService.getByCategory(userProfile.id, category.id);
     expect(categoryRepos).toHaveLength(1);
+
+    const categoryPullRequests = await pullRequestService.getByCategory(userProfile.id, category.id);
+    expect(categoryPullRequests).toHaveLength(1);
+
+    const userPullRequests = await pullRequestService.getByUser(userProfile.id);
+    expect(userPullRequests).toHaveLength(1);
+
+    const userCodeReviews = await codeReviewService.getByUser(userProfile.id);
+    expect(userCodeReviews).toHaveLength(1);
+
+    const pullRequestCodeReviews = await codeReviewService.getByPullRequest(pullRequest.id);
+    expect(pullRequestCodeReviews).toHaveLength(1);
 
     // Clean up
     codeReviewService.delete(codeReview.id, repo.id);
